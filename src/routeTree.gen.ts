@@ -10,8 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as authRegisterRouteImport } from './routes/(auth)/register'
-import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as appDashboardRouteRouteImport } from './routes/(app)/dashboard/route'
 import { Route as appDashboardIndexRouteImport } from './routes/(app)/dashboard/index'
 import { Route as appDashboardUsersIndexRouteImport } from './routes/(app)/dashboard/users/index'
@@ -36,16 +34,6 @@ import { Route as appDashboardManuscritsIdstepsStepFiveRouteImport } from './rou
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const authRegisterRoute = authRegisterRouteImport.update({
-  id: '/(auth)/register',
-  path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const authLoginRoute = authLoginRouteImport.update({
-  id: '/(auth)/login',
-  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const appDashboardRouteRoute = appDashboardRouteRouteImport.update({
@@ -169,8 +157,6 @@ const appDashboardManuscritsIdstepsStepFiveRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof appDashboardRouteRouteWithChildren
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
   '/dashboard/': typeof appDashboardIndexRoute
   '/dashboard/step-five': typeof appDashboardstepsStepFiveRoute
   '/dashboard/step-four': typeof appDashboardstepsStepFourRoute
@@ -193,8 +179,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/login': typeof authLoginRoute
-  '/register': typeof authRegisterRoute
   '/dashboard': typeof appDashboardIndexRoute
   '/dashboard/step-five': typeof appDashboardstepsStepFiveRoute
   '/dashboard/step-four': typeof appDashboardstepsStepFourRoute
@@ -219,8 +203,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/(app)/dashboard': typeof appDashboardRouteRouteWithChildren
-  '/(auth)/login': typeof authLoginRoute
-  '/(auth)/register': typeof authRegisterRoute
   '/(app)/dashboard/': typeof appDashboardIndexRoute
   '/(app)/dashboard/(steps)/step-five': typeof appDashboardstepsStepFiveRoute
   '/(app)/dashboard/(steps)/step-four': typeof appDashboardstepsStepFourRoute
@@ -246,8 +228,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/dashboard'
-    | '/login'
-    | '/register'
     | '/dashboard/'
     | '/dashboard/step-five'
     | '/dashboard/step-four'
@@ -270,8 +250,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/login'
-    | '/register'
     | '/dashboard'
     | '/dashboard/step-five'
     | '/dashboard/step-four'
@@ -295,8 +273,6 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/(app)/dashboard'
-    | '/(auth)/login'
-    | '/(auth)/register'
     | '/(app)/dashboard/'
     | '/(app)/dashboard/(steps)/step-five'
     | '/(app)/dashboard/(steps)/step-four'
@@ -321,8 +297,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   appDashboardRouteRoute: typeof appDashboardRouteRouteWithChildren
-  authLoginRoute: typeof authLoginRoute
-  authRegisterRoute: typeof authRegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -332,20 +306,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(auth)/register': {
-      id: '/(auth)/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof authRegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/(auth)/login': {
-      id: '/(auth)/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof authLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(app)/dashboard': {
@@ -547,8 +507,6 @@ const appDashboardRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   appDashboardRouteRoute: appDashboardRouteRouteWithChildren,
-  authLoginRoute: authLoginRoute,
-  authRegisterRoute: authRegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
