@@ -16,7 +16,6 @@ import { Route as appDashboardUsersIndexRouteImport } from './routes/(app)/dashb
 import { Route as appDashboardReportsIndexRouteImport } from './routes/(app)/dashboard/reports/index'
 import { Route as appDashboardManuscritsIndexRouteImport } from './routes/(app)/dashboard/manuscrits/index'
 import { Route as appDashboardKhizanatIndexRouteImport } from './routes/(app)/dashboard/khizanat/index'
-import { Route as appDashboardArchivesIndexRouteImport } from './routes/(app)/dashboard/archives/index'
 import { Route as appDashboardstepsStepTwoRouteImport } from './routes/(app)/dashboard/(steps)/step-two'
 import { Route as appDashboardstepsStepThreeRouteImport } from './routes/(app)/dashboard/(steps)/step-three'
 import { Route as appDashboardstepsStepSixRouteImport } from './routes/(app)/dashboard/(steps)/step-six'
@@ -24,6 +23,7 @@ import { Route as appDashboardstepsStepOneRouteImport } from './routes/(app)/das
 import { Route as appDashboardstepsStepFourRouteImport } from './routes/(app)/dashboard/(steps)/step-four'
 import { Route as appDashboardstepsStepFiveRouteImport } from './routes/(app)/dashboard/(steps)/step-five'
 import { Route as appDashboardManuscritsIdIndexRouteImport } from './routes/(app)/dashboard/manuscrits/$id/index'
+import { Route as appDashboardKhizanatIdIndexRouteImport } from './routes/(app)/dashboard/khizanat/$id/index'
 import { Route as appDashboardManuscritsIdstepsStepTwoRouteImport } from './routes/(app)/dashboard/manuscrits/$id/(steps)/step-two'
 import { Route as appDashboardManuscritsIdstepsStepThreeRouteImport } from './routes/(app)/dashboard/manuscrits/$id/(steps)/step-three'
 import { Route as appDashboardManuscritsIdstepsStepSixRouteImport } from './routes/(app)/dashboard/manuscrits/$id/(steps)/step-six'
@@ -69,12 +69,6 @@ const appDashboardKhizanatIndexRoute =
     path: '/khizanat/',
     getParentRoute: () => appDashboardRouteRoute,
   } as any)
-const appDashboardArchivesIndexRoute =
-  appDashboardArchivesIndexRouteImport.update({
-    id: '/archives/',
-    path: '/archives/',
-    getParentRoute: () => appDashboardRouteRoute,
-  } as any)
 const appDashboardstepsStepTwoRoute =
   appDashboardstepsStepTwoRouteImport.update({
     id: '/(steps)/step-two',
@@ -115,6 +109,12 @@ const appDashboardManuscritsIdIndexRoute =
   appDashboardManuscritsIdIndexRouteImport.update({
     id: '/manuscrits/$id/',
     path: '/manuscrits/$id/',
+    getParentRoute: () => appDashboardRouteRoute,
+  } as any)
+const appDashboardKhizanatIdIndexRoute =
+  appDashboardKhizanatIdIndexRouteImport.update({
+    id: '/khizanat/$id/',
+    path: '/khizanat/$id/',
     getParentRoute: () => appDashboardRouteRoute,
   } as any)
 const appDashboardManuscritsIdstepsStepTwoRoute =
@@ -164,11 +164,11 @@ export interface FileRoutesByFullPath {
   '/dashboard/step-six': typeof appDashboardstepsStepSixRoute
   '/dashboard/step-three': typeof appDashboardstepsStepThreeRoute
   '/dashboard/step-two': typeof appDashboardstepsStepTwoRoute
-  '/dashboard/archives/': typeof appDashboardArchivesIndexRoute
   '/dashboard/khizanat/': typeof appDashboardKhizanatIndexRoute
   '/dashboard/manuscrits/': typeof appDashboardManuscritsIndexRoute
   '/dashboard/reports/': typeof appDashboardReportsIndexRoute
   '/dashboard/users/': typeof appDashboardUsersIndexRoute
+  '/dashboard/khizanat/$id/': typeof appDashboardKhizanatIdIndexRoute
   '/dashboard/manuscrits/$id/': typeof appDashboardManuscritsIdIndexRoute
   '/dashboard/manuscrits/$id/step-five': typeof appDashboardManuscritsIdstepsStepFiveRoute
   '/dashboard/manuscrits/$id/step-four': typeof appDashboardManuscritsIdstepsStepFourRoute
@@ -186,11 +186,11 @@ export interface FileRoutesByTo {
   '/dashboard/step-six': typeof appDashboardstepsStepSixRoute
   '/dashboard/step-three': typeof appDashboardstepsStepThreeRoute
   '/dashboard/step-two': typeof appDashboardstepsStepTwoRoute
-  '/dashboard/archives': typeof appDashboardArchivesIndexRoute
   '/dashboard/khizanat': typeof appDashboardKhizanatIndexRoute
   '/dashboard/manuscrits': typeof appDashboardManuscritsIndexRoute
   '/dashboard/reports': typeof appDashboardReportsIndexRoute
   '/dashboard/users': typeof appDashboardUsersIndexRoute
+  '/dashboard/khizanat/$id': typeof appDashboardKhizanatIdIndexRoute
   '/dashboard/manuscrits/$id': typeof appDashboardManuscritsIdIndexRoute
   '/dashboard/manuscrits/$id/step-five': typeof appDashboardManuscritsIdstepsStepFiveRoute
   '/dashboard/manuscrits/$id/step-four': typeof appDashboardManuscritsIdstepsStepFourRoute
@@ -210,11 +210,11 @@ export interface FileRoutesById {
   '/(app)/dashboard/(steps)/step-six': typeof appDashboardstepsStepSixRoute
   '/(app)/dashboard/(steps)/step-three': typeof appDashboardstepsStepThreeRoute
   '/(app)/dashboard/(steps)/step-two': typeof appDashboardstepsStepTwoRoute
-  '/(app)/dashboard/archives/': typeof appDashboardArchivesIndexRoute
   '/(app)/dashboard/khizanat/': typeof appDashboardKhizanatIndexRoute
   '/(app)/dashboard/manuscrits/': typeof appDashboardManuscritsIndexRoute
   '/(app)/dashboard/reports/': typeof appDashboardReportsIndexRoute
   '/(app)/dashboard/users/': typeof appDashboardUsersIndexRoute
+  '/(app)/dashboard/khizanat/$id/': typeof appDashboardKhizanatIdIndexRoute
   '/(app)/dashboard/manuscrits/$id/': typeof appDashboardManuscritsIdIndexRoute
   '/(app)/dashboard/manuscrits/$id/(steps)/step-five': typeof appDashboardManuscritsIdstepsStepFiveRoute
   '/(app)/dashboard/manuscrits/$id/(steps)/step-four': typeof appDashboardManuscritsIdstepsStepFourRoute
@@ -235,11 +235,11 @@ export interface FileRouteTypes {
     | '/dashboard/step-six'
     | '/dashboard/step-three'
     | '/dashboard/step-two'
-    | '/dashboard/archives/'
     | '/dashboard/khizanat/'
     | '/dashboard/manuscrits/'
     | '/dashboard/reports/'
     | '/dashboard/users/'
+    | '/dashboard/khizanat/$id/'
     | '/dashboard/manuscrits/$id/'
     | '/dashboard/manuscrits/$id/step-five'
     | '/dashboard/manuscrits/$id/step-four'
@@ -257,11 +257,11 @@ export interface FileRouteTypes {
     | '/dashboard/step-six'
     | '/dashboard/step-three'
     | '/dashboard/step-two'
-    | '/dashboard/archives'
     | '/dashboard/khizanat'
     | '/dashboard/manuscrits'
     | '/dashboard/reports'
     | '/dashboard/users'
+    | '/dashboard/khizanat/$id'
     | '/dashboard/manuscrits/$id'
     | '/dashboard/manuscrits/$id/step-five'
     | '/dashboard/manuscrits/$id/step-four'
@@ -280,11 +280,11 @@ export interface FileRouteTypes {
     | '/(app)/dashboard/(steps)/step-six'
     | '/(app)/dashboard/(steps)/step-three'
     | '/(app)/dashboard/(steps)/step-two'
-    | '/(app)/dashboard/archives/'
     | '/(app)/dashboard/khizanat/'
     | '/(app)/dashboard/manuscrits/'
     | '/(app)/dashboard/reports/'
     | '/(app)/dashboard/users/'
+    | '/(app)/dashboard/khizanat/$id/'
     | '/(app)/dashboard/manuscrits/$id/'
     | '/(app)/dashboard/manuscrits/$id/(steps)/step-five'
     | '/(app)/dashboard/manuscrits/$id/(steps)/step-four'
@@ -350,13 +350,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof appDashboardKhizanatIndexRouteImport
       parentRoute: typeof appDashboardRouteRoute
     }
-    '/(app)/dashboard/archives/': {
-      id: '/(app)/dashboard/archives/'
-      path: '/archives'
-      fullPath: '/dashboard/archives/'
-      preLoaderRoute: typeof appDashboardArchivesIndexRouteImport
-      parentRoute: typeof appDashboardRouteRoute
-    }
     '/(app)/dashboard/(steps)/step-two': {
       id: '/(app)/dashboard/(steps)/step-two'
       path: '/step-two'
@@ -404,6 +397,13 @@ declare module '@tanstack/react-router' {
       path: '/manuscrits/$id'
       fullPath: '/dashboard/manuscrits/$id/'
       preLoaderRoute: typeof appDashboardManuscritsIdIndexRouteImport
+      parentRoute: typeof appDashboardRouteRoute
+    }
+    '/(app)/dashboard/khizanat/$id/': {
+      id: '/(app)/dashboard/khizanat/$id/'
+      path: '/khizanat/$id'
+      fullPath: '/dashboard/khizanat/$id/'
+      preLoaderRoute: typeof appDashboardKhizanatIdIndexRouteImport
       parentRoute: typeof appDashboardRouteRoute
     }
     '/(app)/dashboard/manuscrits/$id/(steps)/step-two': {
@@ -459,11 +459,11 @@ interface appDashboardRouteRouteChildren {
   appDashboardstepsStepSixRoute: typeof appDashboardstepsStepSixRoute
   appDashboardstepsStepThreeRoute: typeof appDashboardstepsStepThreeRoute
   appDashboardstepsStepTwoRoute: typeof appDashboardstepsStepTwoRoute
-  appDashboardArchivesIndexRoute: typeof appDashboardArchivesIndexRoute
   appDashboardKhizanatIndexRoute: typeof appDashboardKhizanatIndexRoute
   appDashboardManuscritsIndexRoute: typeof appDashboardManuscritsIndexRoute
   appDashboardReportsIndexRoute: typeof appDashboardReportsIndexRoute
   appDashboardUsersIndexRoute: typeof appDashboardUsersIndexRoute
+  appDashboardKhizanatIdIndexRoute: typeof appDashboardKhizanatIdIndexRoute
   appDashboardManuscritsIdIndexRoute: typeof appDashboardManuscritsIdIndexRoute
   appDashboardManuscritsIdstepsStepFiveRoute: typeof appDashboardManuscritsIdstepsStepFiveRoute
   appDashboardManuscritsIdstepsStepFourRoute: typeof appDashboardManuscritsIdstepsStepFourRoute
@@ -481,11 +481,11 @@ const appDashboardRouteRouteChildren: appDashboardRouteRouteChildren = {
   appDashboardstepsStepSixRoute: appDashboardstepsStepSixRoute,
   appDashboardstepsStepThreeRoute: appDashboardstepsStepThreeRoute,
   appDashboardstepsStepTwoRoute: appDashboardstepsStepTwoRoute,
-  appDashboardArchivesIndexRoute: appDashboardArchivesIndexRoute,
   appDashboardKhizanatIndexRoute: appDashboardKhizanatIndexRoute,
   appDashboardManuscritsIndexRoute: appDashboardManuscritsIndexRoute,
   appDashboardReportsIndexRoute: appDashboardReportsIndexRoute,
   appDashboardUsersIndexRoute: appDashboardUsersIndexRoute,
+  appDashboardKhizanatIdIndexRoute: appDashboardKhizanatIdIndexRoute,
   appDashboardManuscritsIdIndexRoute: appDashboardManuscritsIdIndexRoute,
   appDashboardManuscritsIdstepsStepFiveRoute:
     appDashboardManuscritsIdstepsStepFiveRoute,

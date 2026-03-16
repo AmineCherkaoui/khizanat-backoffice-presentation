@@ -16,9 +16,9 @@ export const Route = createFileRoute(
     const { manuscripts } = getManuscripts();
     const manuscript = manuscripts.find((m) => m.id === params.id);
 
-    if (!manuscript || manuscript.currentStep < 5) {
-      throw notFound();
-    }
+    // if (!manuscript || manuscript.currentStep < 5) {
+    //   throw notFound();
+    // }
 
     return manuscript;
   },
@@ -31,7 +31,6 @@ function RouteComponent() {
       <DashboardHeader
         title={`المرحلة ${STEPS[4].id} • ${STEPS[4].title}`}
         description={"تسجيل وفحص المخطوطة الجديدة"}
-
       />
       <StepFiveForm manuscript={manuscript} />
     </>

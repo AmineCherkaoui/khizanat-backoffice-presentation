@@ -23,7 +23,7 @@ import { motion } from "motion/react";
 
 const badgeVariant: Record<TaskStatus | ManuscriptStatus, BadgeVariant> = {
   "قيد التنفيذ": "info",
-  معلق: "warning",
+  متاخر: "warning",
   مكتمل: "success",
   جيدة: "success",
   متوسطة: "warning",
@@ -127,14 +127,7 @@ function RouteComponent() {
                 </p>
                 <p className="text-sm text-base-500">{storageLocation}</p>
               </div>
-              <div>
-                <p className="font-semibold text-sm text-base-700">
-                  تاريخ الإشاء
-                </p>
-                <p className="text-sm text-base-500">
-                  {formatDate({ date: manuscript.releaseDate })}
-                </p>
-              </div>
+
               <div>
                 <p className="font-semibold text-sm text-base-700">نوع الخط</p>
                 <p className="text-sm text-base-500">{manuscript.fontType}</p>

@@ -8,7 +8,7 @@ import Badge, { type BadgeVariant } from "../../../components/common/badge";
 
 const badgeVariant: Record<TaskStatus, BadgeVariant> = {
   "قيد التنفيذ": "info",
-  معلق: "warning",
+  متاخر: "warning",
   مكتمل: "success",
 };
 

@@ -13,7 +13,7 @@ export const userSchema = z
 
     password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
 
-    "password-confirm": z.string(),
+    "password-confirm": z.string("كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
   })
   .refine((data) => data.password === data["password-confirm"], {
     path: ["password-confirm"],

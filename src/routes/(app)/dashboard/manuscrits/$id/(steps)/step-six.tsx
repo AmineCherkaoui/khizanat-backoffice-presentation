@@ -2,11 +2,7 @@ import { STEPS } from "@/constants";
 import { DashboardHeader } from "@/features/dashboard/components/dashboard-header";
 import StepSixForm from "@/features/dashboard/components/steps/step-six-form";
 import { getManuscripts } from "@/features/dashboard/store/useStorage";
-import {
-  createFileRoute,
-  notFound,
-  useLoaderData,
-} from "@tanstack/react-router";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
   "/(app)/dashboard/manuscrits/$id/(steps)/step-six",
@@ -16,9 +12,9 @@ export const Route = createFileRoute(
     const { manuscripts } = getManuscripts();
     const manuscript = manuscripts.find((m) => m.id === params.id);
 
-    if (!manuscript || manuscript.currentStep < 6) {
-      throw notFound();
-    }
+    // if (!manuscript || manuscript.currentStep < 6) {
+    //   throw notFound();
+    // }
 
     return manuscript;
   },

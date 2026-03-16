@@ -17,9 +17,9 @@ export const Route = createFileRoute(
     const { manuscripts } = getManuscripts();
     const manuscript = manuscripts?.find((m) => m.id === params.id);
 
-    if (!manuscript || manuscript.currentStep < 2) {
-      throw notFound();
-    }
+    // if (!manuscript || manuscript.currentStep < 2) {
+    //   throw notFound();
+    // }
 
     return manuscript;
   },

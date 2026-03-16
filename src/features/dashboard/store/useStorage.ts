@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  khizanat as initialKhizanat,
   MANUSCRIPTS as initialManuscripts,
   users as initialUsers,
   MANUSCRIPTS,
+  type Khizana,
 } from "@/constants/index";
 import type { ManuscriptType } from "@/types/common";
 import { create } from "zustand";
@@ -23,6 +25,7 @@ type Manuscript = any;
 type StoreType = {
   users: User[];
   manuscripts: Manuscript[];
+  khizanat: Khizana[];
 
   addUser: (user: User) => void;
   updateUser: (user: User) => void;
@@ -64,6 +67,7 @@ export const useStorage = create<StoreType>()(
     (set) => ({
       users: initialUsers,
       manuscripts: initialManuscripts,
+      khizanat: initialKhizanat,
 
       addUser: (user) =>
         set((state) => ({
@@ -149,6 +153,32 @@ export const useStorage = create<StoreType>()(
               : m,
           ),
         })),
+
+      addKhizana: (khizana: any, managerId?: number) =>
+        set((state) => {
+          const updatedUsers = managerId
+            ? state.users.map((u) =>
+                u.id === managerId ? { ...u, khizana: khizana.value } : u,
+              )
+            : state.users;
+
+          return {
+            khizanat: [...state.khizanat, khizana],
+            users: updatedUsers,
+          };
+        }),
+
+      updateKhizana: (updated: any) =>
+        set((state) => ({
+          khizanat: state.khizanat.map((k) =>
+            k.value === updated.value ? updated : k,
+          ),
+        })),
+
+      deleteKhizana: (value: any) =>
+        set((state) => ({
+          khizanat: state.khizanat.filter((k) => k.value !== value),
+        })),
     }),
 
     {
@@ -157,6 +187,23 @@ export const useStorage = create<StoreType>()(
   ),
 );
 
+export function getStorageData(): {
+  manuscripts: ManuscriptType[];
+  khizanat: Khizana[];
+} {
+  const data = localStorage.getItem("khizana-storage");
+  if (data) {
+    const parsed = JSON.parse(data).state;
+    return {
+      manuscripts: parsed.manuscripts || MANUSCRIPTS,
+      khizanat: parsed.khizanat || initialKhizanat,
+    };
+  }
+  return {
+    manuscripts: MANUSCRIPTS,
+    khizanat: initialKhizanat,
+  };
+}
 export function getManuscripts(): { manuscripts: ManuscriptType[] } {
   const data = localStorage.getItem("khizana-storage");
   return data ? JSON.parse(data).state : { manuscripts: MANUSCRIPTS };

@@ -19,11 +19,6 @@ export const SIDEBAR_LINKS = linkOptions([
     to: "/dashboard/khizanat",
     includeChildren: true,
   },
-  {
-    title: "الأرشيفات",
-    to: "/dashboard/archives",
-    includeChildren: true,
-  },
 
   {
     title: "التقارير",
@@ -62,15 +57,15 @@ export const STEPS = [
   {
     id: "4",
     to: "step-four",
-    title: "المراجعة اللغوية",
-    worker: "المُدقِّق العلمي",
+    title: " المعالجة",
+    worker: "مسؤول  المعالجة",
   },
 
   {
     id: "5",
     to: "step-five",
-    title: " المعالجة",
-    worker: "مسؤول  المعالجة",
+    title: "المراجعة اللغوية",
+    worker: "المُدقِّق العلمي",
   },
 
   {
@@ -94,30 +89,23 @@ export const userRoles: ComboBoxType[] = [
   { value: "image_processor", label: "مكلف بمعالجة الصور", variant: "danger" },
 ];
 
-export type TaskStatus = "قيد التنفيذ" | "معلق" | "مكتمل" | "مرفوض";
+export type TaskStatus = "قيد التنفيذ" | "متاخر" | "مكتمل" | "مرفوض";
 
 export const ManuscriptStatus: ComboBoxType[] = [
-  { label: "معلق", value: "معلق" },
+  { label: "متاخر", value: "متاخر" },
   { label: "قيد التنفيذ", value: "قيد التنفيذ" },
   { label: "مكتمل", value: "مكتمل" },
   { label: "مرفوض", value: "مرفوض" },
 ];
 
-export const khizanat: ComboBoxType[] = [
-  { label: "خزانة المسجد الأعظم بوزان", value: "01" },
-  { label: "خزانة المسجد الأعظم بتازة", value: "02" },
-  { label: "خزانة المسجد الأعظم بآسفي", value: "03" },
-  { label: "خزانة ابن يوسف بمراكش", value: "04" },
-  { label: "خزانة ابن يوسف بمراكش", value: "05" },
-  { label: "خزانة القرويين بفاس", value: "06" },
-  { label: "خزانة القايد العيادي بابن جرير", value: "07" },
-  { label: "خزانة مسجد القصبة بالصويرة", value: "08" },
-  { label: "خزانة مولاي ادريس زرهون", value: "09" },
-  { label: "خزانة الزاوية الحمزية العياشية بميدلت", value: "10" },
-  { label: "خزانة المسجد الأعظم بمكناس", value: "11" },
-  { label: "خزانة الزاوية الناصرية بتمكروت", value: "12" },
-  { label: "خزانة المسجد الأعظم بسلا", value: "13" },
-];
+export type Khizana = {
+  label: string;
+  value: string;
+  region: string;
+  city: string;
+  managerId: number;
+  totalOfManuscript: number;
+};
 
 export const users = [
   {
@@ -126,8 +114,9 @@ export const users = [
     email: "ahmad.ouazzani@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "01",
+    khizana: "KH-005", // كان 01
     isActive: true,
+    lastLogin: "2026-02-20T14:15:00",
   },
   {
     id: 2,
@@ -135,8 +124,9 @@ export const users = [
     email: "fatima.taza@habous.ma",
     password: "123456",
     role: "cataloger",
-    khizana: "02",
+    khizana: "KH-007", // كان 02
     isActive: true,
+    lastLogin: "2026-02-23T08:15:00",
   },
   {
     id: 3,
@@ -144,8 +134,9 @@ export const users = [
     email: "youssef.marrakech@habous.ma",
     password: "123456",
     role: "digitizer",
-    khizana: "04",
+    khizana: "KH-003", // كان 04
     isActive: true,
+    lastLogin: "2026-02-22T07:15:00",
   },
   {
     id: 4,
@@ -153,8 +144,9 @@ export const users = [
     email: "meryem.fes@habous.ma",
     password: "123456",
     role: "image_processor",
-    khizana: "06",
+    khizana: "KH-002", // كان 06
     isActive: true,
+    lastLogin: "2026-02-21T09:15:00",
   },
   {
     id: 5,
@@ -162,8 +154,9 @@ export const users = [
     email: "abdellah.meknes@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "11",
+    khizana: "KH-006", // كان 11
     isActive: false,
+    lastLogin: "2026-02-20T09:15:00",
   },
   {
     id: 6,
@@ -171,8 +164,9 @@ export const users = [
     email: "salma.sale@habous.ma",
     password: "123456",
     role: "cataloger",
-    khizana: "13",
+    khizana: "KH-011", // كان 13
     isActive: true,
+    lastLogin: "2026-01-29T09:15:00",
   },
   {
     id: 7,
@@ -180,8 +174,9 @@ export const users = [
     email: "hamza.midelt@habous.ma",
     password: "123456",
     role: "digitizer",
-    khizana: "10",
+    khizana: "KH-004", // كان 10
     isActive: true,
+    lastLogin: "2026-01-23T08:15:00",
   },
   {
     id: 8,
@@ -189,8 +184,9 @@ export const users = [
     email: "leila.essaouira@habous.ma",
     password: "123456",
     role: "image_processor",
-    khizana: "08",
+    khizana: "KH-010", // كان 08
     isActive: true,
+    lastLogin: "2026-01-24T09:15:00",
   },
   {
     id: 9,
@@ -198,8 +194,9 @@ export const users = [
     email: "hassan.zarhoun@habous.ma",
     password: "123456",
     role: "cataloger",
-    khizana: "09",
+    khizana: "KH-008", // كان 09
     isActive: true,
+    lastLogin: "2026-02-12T09:15:00",
   },
   {
     id: 10,
@@ -207,8 +204,9 @@ export const users = [
     email: "aicha.midelt@habous.ma",
     password: "123456",
     role: "digitizer",
-    khizana: "10",
+    khizana: "KH-004", // كان 10
     isActive: false,
+    lastLogin: "2026-02-13T09:15:00",
   },
   {
     id: 11,
@@ -216,8 +214,9 @@ export const users = [
     email: "mustapha.meknes@habous.ma",
     password: "123456",
     role: "image_processor",
-    khizana: "11",
+    khizana: "KH-006", // كان 11
     isActive: true,
+    lastLogin: "2026-02-17T09:15:00",
   },
   {
     id: 12,
@@ -225,8 +224,9 @@ export const users = [
     email: "khadija.tamkroute@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "12",
+    khizana: "KH-001", // كان 12
     isActive: true,
+    lastLogin: "2026-02-19T09:15:00",
   },
   {
     id: 13,
@@ -234,8 +234,9 @@ export const users = [
     email: "nour.sale@habous.ma",
     password: "123456",
     role: "cataloger",
-    khizana: "13",
+    khizana: "KH-011", // كان 13
     isActive: false,
+    lastLogin: "2026-02-22T09:15:00",
   },
   {
     id: 14,
@@ -243,8 +244,9 @@ export const users = [
     email: "jamila.fes@habous.ma",
     password: "123456",
     role: "digitizer",
-    khizana: "06",
+    khizana: "KH-002", // كان 06
     isActive: true,
+    lastLogin: "2026-02-24T09:15:00",
   },
   {
     id: 15,
@@ -252,8 +254,9 @@ export const users = [
     email: "abderrahim.ouazzan@habous.ma",
     password: "123456",
     role: "image_processor",
-    khizana: "01",
+    khizana: "KH-005", // كان 01
     isActive: true,
+    lastLogin: "2026-01-20T09:15:00",
   },
   {
     id: 16,
@@ -261,8 +264,9 @@ export const users = [
     email: "souad.taza@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "02",
+    khizana: "KH-007", // كان 02
     isActive: false,
+    lastLogin: "2026-02-11T09:15:00",
   },
   {
     id: 17,
@@ -270,8 +274,9 @@ export const users = [
     email: "rachid.marrakech@habous.ma",
     password: "123456",
     role: "cataloger",
-    khizana: "04",
+    khizana: "KH-003", // كان 04
     isActive: true,
+    lastLogin: "2026-02-01T09:15:00",
   },
   {
     id: 18,
@@ -279,8 +284,9 @@ export const users = [
     email: "houda.essaouira@habous.ma",
     password: "123456",
     role: "digitizer",
-    khizana: "08",
+    khizana: "KH-010", // كان 08
     isActive: true,
+    lastLogin: "2026-02-13T09:15:00",
   },
   {
     id: 19,
@@ -288,188 +294,189 @@ export const users = [
     email: "abdelaziz.midelt@habous.ma",
     password: "123456",
     role: "image_processor",
-    khizana: "10",
+    khizana: "KH-004", // كان 10
     isActive: false,
+    lastLogin: "2026-01-13T19:15:00",
   },
-  {
-    id: 20,
-    name: "فؤاد الناصري",
-    email: "fouad.tamkroute@habous.ma",
-    password: "123456",
-    role: "khizana_admin",
-    khizana: "12",
-    isActive: true,
-  },
+
   {
     id: 21,
-    name: "ليلى السلاوية",
-    email: "layla.sale@habous.ma",
+    name: "محمد الفاسي",
+    email: "mohammed.fes@habous.ma",
     password: "123456",
-    role: "cataloger",
-    khizana: "13",
+    role: "khizana_admin",
+    khizana: "KH-002",
     isActive: true,
+    lastLogin: "2026-03-01T10:00:00",
   },
   {
     id: 22,
-    name: "مروان الفاسي",
-    email: "marouane.fes@habous.ma",
+    name: "طارق المراكشي",
+    email: "tariq.marrakech@habous.ma",
     password: "123456",
-    role: "digitizer",
-    khizana: "06",
-    isActive: false,
+    role: "khizana_admin",
+    khizana: "KH-003",
+    isActive: true,
+    lastLogin: "2026-03-02T09:30:00",
   },
   {
     id: 23,
-    name: "سامي الوزاني",
-    email: "sami.ouazzan@habous.ma",
+    name: "ياسين العياشي",
+    email: "yassine.midelt@habous.ma",
     password: "123456",
-    role: "image_processor",
-    khizana: "01",
+    role: "khizana_admin",
+    khizana: "KH-004",
     isActive: true,
+    lastLogin: "2026-03-05T11:15:00",
   },
   {
     id: 24,
-    name: "أسماء التازية",
-    email: "asma.taza@habous.ma",
+    name: "إدريس الزرهوني",
+    email: "driss.zarhoun@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "02",
+    khizana: "KH-008",
     isActive: true,
+    lastLogin: "2026-02-28T14:20:00",
   },
   {
     id: 25,
-    name: "يونس المراكشي",
-    email: "younes.marrakech@habous.ma",
+    name: "عمر المسفيوي",
+    email: "omar.safi@habous.ma",
     password: "123456",
-    role: "cataloger",
-    khizana: "05",
-    isActive: false,
+    role: "khizana_admin",
+    khizana: "KH-009",
+    isActive: true,
+    lastLogin: "2026-03-10T08:45:00",
   },
   {
     id: 26,
-    name: "صفاء الصويرية",
-    email: "safaa.essaouira@habous.ma",
+    name: "يونس الصويري",
+    email: "younes.essaouira@habous.ma",
     password: "123456",
-    role: "digitizer",
-    khizana: "08",
+    role: "khizana_admin",
+    khizana: "KH-010",
     isActive: true,
+    lastLogin: "2026-03-11T16:10:00",
   },
   {
     id: 27,
-    name: "عبدالمجيد الميدلتي",
-    email: "abdelmajid.midelt@habous.ma",
+    name: "عبدالرحمن السلاوي",
+    email: "abderahmane.sale@habous.ma",
     password: "123456",
-    role: "image_processor",
-    khizana: "10",
+    role: "khizana_admin",
+    khizana: "KH-011",
     isActive: true,
+    lastLogin: "2026-03-09T10:05:00",
   },
   {
     id: 28,
-    name: "رجاء الناصرية",
-    email: "rajaa.tamkroute@habous.ma",
+    name: "هشام الرحماني",
+    email: "hicham.benguerir@habous.ma",
     password: "123456",
     role: "khizana_admin",
-    khizana: "12",
-    isActive: false,
-  },
-  {
-    id: 29,
-    name: "طارق السلاوي",
-    email: "tarik.sale@habous.ma",
-    password: "123456",
-    role: "cataloger",
-    khizana: "13",
+    khizana: "KH-012",
     isActive: true,
+    lastLogin: "2026-03-12T09:00:00",
+  },
+];
+
+export const khizanat: Khizana[] = [
+  {
+    label: "خزانة الزاوية الناصرية بتمكروت",
+    value: "KH-001",
+    region: "درعة - تافيلالت",
+    city: "تمكروت (زاكورة)",
+    managerId: 12,
+    totalOfManuscript: 4777,
   },
   {
-    id: 30,
-    name: "لمياء الفاسية",
-    email: "lamiya.fes@habous.ma",
-    password: "123456",
-    role: "digitizer",
-    khizana: "06",
-    isActive: true,
+    label: "خزانة القرويين بفاس",
+    value: "KH-002",
+    region: "فاس - مكناس",
+    city: "فاس",
+    managerId: 21, // مدير جديد
+    totalOfManuscript: 4000,
   },
   {
-    id: 31,
-    name: "عبدالاله الوزاني",
-    email: "abdelilah.ouazzan@habous.ma",
-    password: "123456",
-    role: "image_processor",
-    khizana: "01",
-    isActive: false,
+    label: "خزانة ابن يوسف بمراكش",
+    value: "KH-003",
+    region: "مراكش - آسفي",
+    city: "مراكش",
+    managerId: 22, // مدير جديد
+    totalOfManuscript: 2736,
   },
   {
-    id: 32,
-    name: "سناء التازية",
-    email: "sanaa.taza@habous.ma",
-    password: "123456",
-    role: "khizana_admin",
-    khizana: "02",
-    isActive: true,
+    label: "خزانة الزاوية الحمزية العياشية بميدلت",
+    value: "KH-004",
+    region: "درعة - تافيلالت",
+    city: "ميدلت",
+    managerId: 23, // مدير جديد
+    totalOfManuscript: 1540,
   },
   {
-    id: 33,
-    name: "حميد المراكشي",
-    email: "hamid.marrakech@habous.ma",
-    password: "123456",
-    role: "cataloger",
-    khizana: "04",
-    isActive: true,
+    label: "خزانة المسجد الأعظم بوزان",
+    value: "KH-005",
+    region: "طنجة - تطوان - الحسيمة",
+    city: "وزان",
+    managerId: 1,
+    totalOfManuscript: 1386,
   },
   {
-    id: 34,
-    name: "إيمان الصويرية",
-    email: "iman.essaouira@habous.ma",
-    password: "123456",
-    role: "digitizer",
-    khizana: "08",
-    isActive: false,
+    label: "خزانة المسجد الأعظم بمكناس",
+    value: "KH-006",
+    region: "فاس - مكناس",
+    city: "مكناس",
+    managerId: 5,
+    totalOfManuscript: 925,
   },
   {
-    id: 35,
-    name: "عبدالواحد الميدلتي",
-    email: "abdelwahid.midelt@habous.ma",
-    password: "123456",
-    role: "image_processor",
-    khizana: "10",
-    isActive: true,
+    label: "خزانة المسجد الأعظم بتازة",
+    value: "KH-007",
+    region: "فاس - مكناس",
+    city: "تازة",
+    managerId: 16,
+    totalOfManuscript: 703,
   },
   {
-    id: 36,
-    name: "فاطمة الناصرية",
-    email: "fatima.tamkroute@habous.ma",
-    password: "123456",
-    role: "khizana_admin",
-    khizana: "12",
-    isActive: true,
+    label: "خزانة مولاي ادريس زرهون",
+    value: "KH-008",
+    region: "فاس - مكناس",
+    city: "زرهون",
+    managerId: 24, // مدير جديد
+    totalOfManuscript: 454,
   },
   {
-    id: 37,
-    name: "يوسف السلاوي",
-    email: "youssef.sale@habous.ma",
-    password: "123456",
-    role: "cataloger",
-    khizana: "13",
-    isActive: false,
+    label: "خزانة المسجد الأعظم بآسفي",
+    value: "KH-009",
+    region: "مراكش - آسفي",
+    city: "آسفي",
+    managerId: 25, // مدير جديد
+    totalOfManuscript: 410,
   },
   {
-    id: 38,
-    name: "مريم الفاسية",
-    email: "meryem2.fes@habous.ma",
-    password: "123456",
-    role: "digitizer",
-    khizana: "06",
-    isActive: true,
+    label: "خزانة مسجد القصبة بالصويرة",
+    value: "KH-010",
+    region: "مراكش - آسفي",
+    city: "الصويرة",
+    managerId: 26, // مدير جديد
+    totalOfManuscript: 248,
   },
   {
-    id: 39,
-    name: "عبدالرحمان الوزاني",
-    email: "abderrahman.ouazzan@habous.ma",
-    password: "123456",
-    role: "image_processor",
-    khizana: "01",
-    isActive: true,
+    label: "خزانة المسجد الأعظم بسلا",
+    value: "KH-011",
+    region: "الرباط - سلا - القنيطرة",
+    city: "سلا",
+    managerId: 27, // مدير جديد
+    totalOfManuscript: 149,
+  },
+  {
+    label: "خزانة القايد العيادي بابن جرير",
+    value: "KH-012",
+    region: "مراكش - آسفي",
+    city: "ابن جرير",
+    managerId: 28, // مدير جديد
+    totalOfManuscript: 50,
   },
 ];
 
@@ -479,7 +486,7 @@ export const MANUSCRIPTS = [
     title: "كتاب الحكمة و الفلسفة",
     author: "ابن رشد",
     scribe: null,
-    storageLocation: "06",
+    storageLocation: "KH-001", // خزانة 1
     releaseDate: "01-01-2000",
     stepStatus: "قيد التنفيذ",
     fontType: "عربي مغربي",
@@ -488,14 +495,12 @@ export const MANUSCRIPTS = [
     linesPerPage: 29,
     dimensions: "20/30",
     classification: "الفلسفة",
-    firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    firstDigitalizationDate: "01-12-2026",
+    lastDigitalizationDate: "05-12-2026",
     CreationDate: "15-01-2026",
     manuscriptStatus: "جيدة",
-    startsWith:
-      "الحمد لله الذي ألهمنا حقائق المعاني ودقائق البيان وخصنا ببدائع الأيادي .",
-    endsWith:
-      "فالحمد لله على التوفيق، ومنه الهداية إلى سواء الطريق، والصلاة والسلام على محمد ذوي (كذا) النفوس الزكية وشرف وكرم ...",
+    startsWith: "الحمد لله الذي ألهمنا حقائق المعاني ودقائق البيان...",
+    endsWith: "...والصلاة والسلام على محمد ذوي النفوس الزكية وشرف وكرم.",
     needToBeMaintenance: false,
     isCurrentlyMaintaning: false,
     maintananceFinished: false,
@@ -505,81 +510,27 @@ export const MANUSCRIPTS = [
     link: "https://manuscripts.gov.ma/view/MS-2026-001",
     century: "القرن الثاني عشر",
     visibility: "private",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
     logs: [
       {
-        id: "1",
-        title: "تمّت الموافقة على الاستقبال",
-        user: {
-          name: "أحمد الوزاني",
-          role: "مسؤول خزانة",
-        },
+        id: "step-1",
+        title: "الفهرسة",
+        status: "completed",
+        user: { name: "أحمد الوزاني", role: "مسؤول خزانة" },
         date: "2026-02-20T12:47:27.646Z",
-
-        content:
-          "تم التحقق من الحالة الفيزيائية للمخطوط. وهو جاهز لعملية الرقمنة.  المخطوطة في حالة جيدة عمومًا، مع وجود تآكل طفيف في التجليد",
       },
       {
-        id: "2",
-        title: "اكتملت الرقمنة",
-        user: {
-          name: "أحمد الوزاني",
-          role: "مسؤول خزانة",
-        },
+        id: "step-2",
+        title: "الرقمنة",
+        status: "completed",
+        user: { name: "أحمد الوزاني", role: "مسؤول خزانة" },
         date: "2026-02-20T12:47:27.646Z",
-        content:
-          "تم مسح 145 صفحة بدقة 600 نقطة في البوصة (DPI). جرى التقاط جميع الصفحات بنجاح مع جودة متناسقة ",
-      },
-      {
-        id: "3",
-        title: "تمّت الموافقة على المراجعة العلمية",
-        user: {
-          name: "أحمد الوزاني",
-          role: "مسؤول خزانة",
-        },
-        date: "2026-02-20T12:47:27.646Z",
-        content:
-          "تم تأكيد أصالة  المخطوطة. وهو نسخة أصلية تعود إلى القرن الثاني عشر. النص واضح وكامل، ويُعد عملًا فلسفيًا مهمًا صالحًا للنشر",
       },
     ],
     pages: [
       {
         id: 1,
         size: "12.4 MB",
-        status: "محملة ",
+        status: "محملة",
         url: "/covers/ms-2026-001.jpg",
       },
     ],
@@ -588,15 +539,15 @@ export const MANUSCRIPTS = [
     id: "MS-2026-002",
     title: "القانون في الطب",
     author: "ابن سينا",
-    storageLocation: "04",
+    storageLocation: "KH-002", // خزانة 2
     releaseDate: "01-01-1025",
-    stepStatus: "قيد التنفيذ",
+    stepStatus: "مرفوض",
     fontType: "نسخ",
-    currentStep: 5,
+    currentStep: 3,
     size: 18,
     classification: "الطب",
     firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    lastDigitalizationDate: "04-12-2026",
     manuscriptStatus: "ضعيفة",
     startsWith: "الحمد لله الذي خلق الإنسان...",
     endsWith: "...وهذا آخر القول في الأدوية",
@@ -607,54 +558,20 @@ export const MANUSCRIPTS = [
     numPages: 65,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-003",
     title: "رحلة ابن بطوطة",
     author: "ابن بطوطة",
-    storageLocation: "01",
+    storageLocation: "KH-003", // خزانة 3
     releaseDate: "01-01-1355",
-    stepStatus: "معلق",
+    stepStatus: "متاخر",
     fontType: "مغربي مبسوط",
-    currentStep: 6,
+    currentStep: 5, // تم التعديل من 6 إلى 5 لأن 6 أصبح يعني "مكتمل"
     size: 20,
     classification: "أدب الرحلات",
-    firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    firstDigitalizationDate: "01-02-2026",
+    lastDigitalizationDate: "01-02-2026",
     manuscriptStatus: "متوسطة",
     startsWith: "قال الشيخ شمس الدين...",
     endsWith: "...انتهت الرحلة في غرناطة",
@@ -664,54 +581,20 @@ export const MANUSCRIPTS = [
     numPages: 70,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-004",
     title: "المقدمة",
     author: "ابن خلدون",
-    storageLocation: "06",
+    storageLocation: "KH-004", // خزانة 4
     releaseDate: "01-01-1377",
     stepStatus: "مكتمل",
     fontType: "مغربي مجوهر",
-    currentStep: 1,
+    currentStep: 6, // تم التعديل من 7 إلى 6
     size: 22,
     classification: "علم الاجتماع",
-    firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    firstDigitalizationDate: "01-12-2026",
+    lastDigitalizationDate: "05-12-2026",
     manuscriptStatus: "جيدة",
     startsWith: "اعلم أن فن التاريخ...",
     endsWith: "...والله يؤيد بنصره من يشاء",
@@ -721,54 +604,20 @@ export const MANUSCRIPTS = [
     numPages: 206,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-005",
     title: "كتاب الشفاء",
     author: "ابن سينا",
-    storageLocation: "11",
+    storageLocation: "KH-005", // خزانة 5
     releaseDate: "01-01-1020",
     stepStatus: "قيد التنفيذ",
     fontType: "ثلث",
     currentStep: 4,
     size: 16,
     classification: "فلسفة وعلوم",
-    firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    firstDigitalizationDate: "10-12-2026",
+    lastDigitalizationDate: "15-12-2026",
     manuscriptStatus: "جيدة",
     startsWith: "أما بعد حمد الله...",
     endsWith: "...وهذا تمام المنطق",
@@ -778,54 +627,20 @@ export const MANUSCRIPTS = [
     numPages: 336,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-006",
     title: "ديوان المتنبي",
     author: "أبو الطيب المتنبي",
-    storageLocation: "12",
+    storageLocation: "KH-006", // خزانة 6
     releaseDate: "01-01-0950",
-    stepStatus: "معلق",
+    stepStatus: "متاخر",
     fontType: "كوفي",
-    currentStep: 6,
+    currentStep: 5,
     size: 14,
     classification: "الشعر",
-    firstDigitalizationDate: "02-12-2026",
-    lastDigitalizationDate: "02-12-2026",
+    firstDigitalizationDate: "01-02-2026",
+    lastDigitalizationDate: "01-02-2026",
     manuscriptStatus: "متوسطة",
     startsWith: "واحر قلباه ممن قلبه شبم...",
     endsWith: "...أنا الذي نظر الأعمى إلى أدبي",
@@ -835,54 +650,20 @@ export const MANUSCRIPTS = [
     numPages: 145,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-007",
     title: "البيان والتبيين",
     author: "الجاحظ",
-    storageLocation: "13",
+    storageLocation: "KH-007", // خزانة 7
     releaseDate: "01-01-0847",
-    stepStatus: "قيد التنفيذ",
+    stepStatus: "مكتمل",
     fontType: "نسخ",
-    currentStep: 2,
+    currentStep: 6, // تم التعديل من 7 إلى 6
     size: 17,
     classification: "الأدب والبلاغة",
-    firstDigitalizationDate: "03-12-2026",
-    lastDigitalizationDate: "03-12-2026",
+    firstDigitalizationDate: "01-12-2026",
+    lastDigitalizationDate: "10-12-2026",
     manuscriptStatus: "جيدة",
     startsWith: "هذا كتاب البيان...",
     endsWith: "...تم الجزء الثالث",
@@ -892,54 +673,20 @@ export const MANUSCRIPTS = [
     numPages: 220,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-008",
     title: "العقد الفريد",
     author: "ابن عبد ربه",
-    storageLocation: "02",
+    storageLocation: "KH-008", // خزانة 8
     releaseDate: "01-01-0940",
-    stepStatus: "مكتمل",
+    stepStatus: "مرفوض",
     fontType: "أندلسي",
-    currentStep: 1,
+    currentStep: 4,
     size: 19,
     classification: "الأدب",
-    firstDigitalizationDate: "03-12-2026",
-    lastDigitalizationDate: "03-12-2026",
+    firstDigitalizationDate: "05-12-2026",
+    lastDigitalizationDate: "06-12-2026",
     manuscriptStatus: "متوسطة",
     startsWith: "الحمد لله رب العالمين...",
     endsWith: "...انتهى كتاب الجوهرة",
@@ -949,54 +696,20 @@ export const MANUSCRIPTS = [
     numPages: 310,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-009",
     title: "الكامل في التاريخ",
     author: "ابن الأثير",
-    storageLocation: "09",
+    storageLocation: "KH-009", // خزانة 9
     releaseDate: "01-01-1231",
     stepStatus: "قيد التنفيذ",
     fontType: "نسخ بغدادي",
-    currentStep: 6,
+    currentStep: 5, // تم التعديل من 6 إلى 5 لأن 6 أصبح يعني "مكتمل"
     size: 15,
     classification: "التاريخ",
     firstDigitalizationDate: "04-12-2026",
-    lastDigitalizationDate: "04-12-2026",
+    lastDigitalizationDate: "09-12-2026",
     manuscriptStatus: "ضعيفة",
     startsWith: "ذكر أخبار الأنبياء...",
     endsWith: "...والله الموفق للصواب",
@@ -1006,54 +719,20 @@ export const MANUSCRIPTS = [
     numPages: 412,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-010",
     title: "الأغاني",
     author: "أبو الفرج الأصفهاني",
-    storageLocation: "03",
+    storageLocation: "KH-010", // خزانة 10
     releaseDate: "01-01-0967",
-    stepStatus: "معلق",
+    stepStatus: "مكتمل",
     fontType: "ديواني",
-    currentStep: 5,
+    currentStep: 6, // تم التعديل من 7 إلى 6
     size: 18,
     classification: "الفن والأدب",
-    firstDigitalizationDate: "04-12-2026",
-    lastDigitalizationDate: "04-12-2026",
+    firstDigitalizationDate: "01-11-2026",
+    lastDigitalizationDate: "15-11-2026",
     manuscriptStatus: "متوسطة",
     startsWith: "هذا خبر الأصوات...",
     endsWith: "...تم كتاب الأغاني بحمد الله",
@@ -1063,54 +742,20 @@ export const MANUSCRIPTS = [
     numPages: 520,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-011",
     title: "الفهرست",
     author: "ابن النديم",
-    storageLocation: "06",
+    storageLocation: "KH-011", // خزانة 11
     releaseDate: "01-01-0987",
-    stepStatus: "قيد التنفيذ",
+    stepStatus: "متاخر",
     fontType: "نسخ",
-    currentStep: 3,
+    currentStep: 4,
     size: 16,
     classification: "الببليوغرافيا",
-    firstDigitalizationDate: "05-12-2026",
-    lastDigitalizationDate: "05-12-2026",
+    firstDigitalizationDate: "01-02-2026",
+    lastDigitalizationDate: "01-02-2026",
     manuscriptStatus: "جيدة",
     startsWith: "هذا فهرست كتب الأمم...",
     endsWith: "...انتهت المقالة العاشرة",
@@ -1120,54 +765,20 @@ export const MANUSCRIPTS = [
     numPages: 198,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
   {
     id: "MS-2026-012",
     title: "المنقذ من الضلال",
     author: "أبو حامد الغزالي",
-    storageLocation: "10",
+    storageLocation: "KH-012", // خزانة 12
     releaseDate: "01-01-1106",
-    stepStatus: "مكتمل",
+    stepStatus: "قيد التنفيذ",
     fontType: "نسخ قديم",
-    currentStep: 1,
+    currentStep: 3,
     size: 13,
     classification: "التصوف",
     firstDigitalizationDate: "05-12-2026",
-    lastDigitalizationDate: "05-12-2026",
+    lastDigitalizationDate: "10-12-2026",
     manuscriptStatus: "جيدة",
     startsWith: "الحمد لله الذي بنعمته...",
     endsWith: "...والحمد لله وحده",
@@ -1177,267 +788,5 @@ export const MANUSCRIPTS = [
     numPages: 88,
     language: "العربية",
     cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
-  },
-  {
-    id: "MS-2026-013",
-    title: "تاريخ الطبري",
-    author: "محمد بن جرير الطبري",
-    storageLocation: "07",
-    releaseDate: "01-01-0915",
-    stepStatus: "قيد التنفيذ",
-    fontType: "كوفي قديم",
-    currentStep: 4,
-    size: 25,
-    classification: "التاريخ",
-    firstDigitalizationDate: "06-12-2026",
-    lastDigitalizationDate: "06-12-2026",
-    manuscriptStatus: "ضعيفة",
-    startsWith: "القول في زمان الرسل...",
-    endsWith: "...في سنة ثلاثمائة للهجرة",
-    needToBeMaintenance: true,
-    isCurrentlyMaintaning: false,
-    maintananceFinished: false,
-    numPages: 600,
-    language: "العربية",
-    cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
-  },
-  {
-    id: "MS-2026-014",
-    title: "إحياء علوم الدين",
-    author: "أبو حامد الغزالي",
-    storageLocation: "08",
-    releaseDate: "01-01-1097",
-    stepStatus: "معلق",
-    fontType: "نسخ",
-    currentStep: 6,
-    size: 16,
-    classification: "علوم الدين",
-    firstDigitalizationDate: "06-12-2026",
-    lastDigitalizationDate: "06-12-2026",
-    manuscriptStatus: "متوسطة",
-    startsWith: "الحمد لله حمداً كثيراً...",
-    endsWith: "...وهذا آخر كتاب الموت",
-    needToBeMaintenance: false,
-    isCurrentlyMaintaning: false,
-    maintananceFinished: false,
-    numPages: 450,
-    language: "العربية",
-    cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
-  },
-  {
-    id: "MS-2026-015",
-    title: "الشفاء بالقرآن",
-    author: "ابن القيم الجوزية",
-    storageLocation: "06",
-    releaseDate: "01-01-1340",
-    stepStatus: "قيد التنفيذ",
-    fontType: "نسخ",
-    currentStep: 2,
-    size: 15,
-    classification: "علوم القرآن",
-    firstDigitalizationDate: "07-12-2026",
-    lastDigitalizationDate: "07-12-2026",
-    manuscriptStatus: "جيدة",
-    startsWith: "فصل في هديه صلى الله عليه وسلم...",
-    endsWith: "...وهو الشافي لا شفا إلا شفاؤه",
-    needToBeMaintenance: false,
-    isCurrentlyMaintaning: false,
-    maintananceFinished: false,
-    numPages: 120,
-    language: "العربية",
-    cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
-  },
-  {
-    id: "MS-2026-016",
-    title: "مجمع الأمثال",
-    author: "الميداني",
-    storageLocation: "05",
-    releaseDate: "01-01-1124",
-    stepStatus: "مكتمل",
-    fontType: "فارسي",
-    currentStep: 1,
-    size: 14,
-    classification: "الأدب والأمثال",
-    firstDigitalizationDate: "07-12-2026",
-    lastDigitalizationDate: "07-12-2026",
-    manuscriptStatus: "جيدة",
-    startsWith: "الحمد لله الذي زين اللسان...",
-    endsWith: "...آخر كتاب الأمثال",
-    needToBeMaintenance: false,
-    isCurrentlyMaintaning: false,
-    maintananceFinished: false,
-    numPages: 275,
-    language: "العربية",
-    cover: "/covers/ms-2026-001.jpg",
-    reviewing: {
-      stepOne: [
-        {
-          title: "اكمال الفحص المادي",
-          isChecked: true,
-        },
-        {
-          title: "التقطت الصور الأولية",
-          isChecked: true,
-        },
-        {
-          title: "توثيق الحالة",
-          isChecked: true,
-        },
-        {
-          title: "تحديث نظام الجرد",
-          isChecked: true,
-        },
-      ],
-      StepThree: [
-        {
-          title: "انطباق الصفحة الأولى و الأخيرة مع PDF",
-          isChecked: true,
-        },
-        {
-          title: "النص واضح و مقروء",
-          isChecked: true,
-        },
-        {
-          title: "المخطوطة كاملة",
-          isChecked: true,
-        },
-      ],
-    },
   },
 ];

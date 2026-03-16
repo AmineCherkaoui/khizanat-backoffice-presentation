@@ -11,7 +11,7 @@ export const manuscriptSchema = z
     author: z.string().optional(),
     scribe: z.string().optional(),
 
-    releaseDate: z.date("يرجى اختيار التاريخ"),
+    // releaseDate: z.date("يرجى اختيار التاريخ"),
 
     language: z.string().min(1, "اللغة مطلوبة"),
 

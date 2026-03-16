@@ -32,13 +32,6 @@ export const Route = createFileRoute(
   },
 });
 
-const DEFAULT_STEPS = [
-  "اكمال الفحص المادي",
-  "التقطت الصور الأولية",
-  "توثيق الحالة",
-  "تحديث نظام الجرد",
-];
-
 export default function RouteComponent() {
   const manuscript = useLoaderData({ from: Route.id });
   const { updateManuscript } = useStorage();
@@ -63,16 +56,9 @@ export default function RouteComponent() {
     startsWith: manuscript?.startsWith || "",
     endsWith: manuscript?.endsWith || "",
     cover: manuscript.cover || undefined,
-    reviewing:
-      manuscript.reviewing?.stepOne ||
-      DEFAULT_STEPS.map((title) => ({
-        title,
-        isChecked: false,
-      })),
   };
 
   const handleUpdate = (values: any) => {
-    console.log(values);
     const updatedData = {
       ...manuscript,
       title: values.title,
@@ -89,10 +75,7 @@ export default function RouteComponent() {
       startsWith: values.startsWith,
       endsWith: values.endsWith,
       manuscriptStatus: values.status,
-      reviewing: {
-        ...manuscript.reviewing,
-        stepOne: values.reviewing,
-      },
+
       lastDigitalizationDate: new Date(),
       cover:
         values.cover instanceof File

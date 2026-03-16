@@ -33,6 +33,7 @@ import type { TaskStatus } from "@/types/common";
 import { useForm, useStore } from "@tanstack/react-form";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
+  AlertTriangle,
   Check,
   ChevronLeft,
   ChevronRight,
@@ -42,12 +43,12 @@ import {
   Trash2,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react"; // Added useRef
 import { toast } from "sonner";
 
 const badgeVariant: Record<TaskStatus | ManuscriptStatus, BadgeVariant> = {
   "قيد التنفيذ": "info",
-  معلق: "warning",
+  متاخر: "warning",
   مكتمل: "success",
   جيدة: "success",
   متوسطة: "warning",
@@ -59,12 +60,30 @@ const PAGE_SIZE = 7;
 
 type SearchParamsType = {
   page: number;
+  filter?: string;
+  search?: string;
+  khizana?: string;
+  status?: string;
+};
+
+const toStandardDateFormat = (dateString: string) => {
+  if (!dateString) return new Date().toISOString().split("T")[0];
+  const parts = dateString.split("-");
+  if (parts.length === 3) {
+    const [day, month, year] = parts;
+    return `${year}-${month}-${day}`;
+  }
+  return dateString;
 };
 
 export const Route = createFileRoute("/(app)/dashboard/manuscrits/")({
   validateSearch: (search: Record<string, unknown>): SearchParamsType => {
     return {
       page: Number(search?.page ?? 1),
+      filter: search?.filter as string | undefined,
+      search: search?.search as string | undefined,
+      khizana: search?.khizana as string | undefined,
+      status: search?.status as string | undefined,
     };
   },
   component: RouteComponent,
@@ -75,31 +94,71 @@ function RouteComponent() {
   const [isStatusPopoverOpen, setIsStatusPopoverOpen] = useState(false);
   const { manuscripts, deleteManuscript } = useStorage();
 
+  const searchParams = Route.useSearch();
+  const { page = 1, filter } = searchParams;
   const navigate = useNavigate({ from: Route.fullPath });
 
-  // FILTER Form
+  const isFirstRender = useRef(true);
+
   const form = useForm({
     defaultValues: {
-      search: "",
-      khizana: "",
-      status: "",
+      search: searchParams.search || "",
+      khizana: searchParams.khizana
+        ? khizanat.find((k) => k.value === searchParams.khizana) || ""
+        : "",
+      status: searchParams.status || "",
     },
   });
+
   const formValues = useStore(form.store, (state) => state.values);
 
   const getFilterValue = (val: any) =>
     typeof val === "object" ? val?.value : val;
+
+  useEffect(() => {
+    // FIX: Do not navigate and reset page=1 on the very first component mount
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    const k = getFilterValue(formValues.khizana);
+    const s = getFilterValue(formValues.status);
+
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        page: 1,
+        search: formValues.search || undefined,
+        khizana: k || undefined,
+        status: s || undefined,
+      }),
+      replace: true,
+    });
+  }, [formValues.search, formValues.khizana, formValues.status, navigate]);
 
   const filteredManuscripts = useMemo(() => {
     const selectedKhizana = getFilterValue(formValues.khizana);
     const selectedStatus = getFilterValue(formValues.status);
     const searchTerm = formValues.search?.toLowerCase().trim();
 
-    if (!selectedKhizana && !searchTerm && !selectedStatus) {
-      return manuscripts;
-    }
-
     return manuscripts.filter((m) => {
+      if (filter === "late") {
+        if (m.stepStatus === "مكتمل" || m.currentStep === 6) return false;
+
+        const dateStr = m.lastDigitalizationDate;
+        if (!dateStr) return false;
+
+        const standardDateStr = toStandardDateFormat(dateStr);
+        const today = new Date();
+        const lastDate = new Date(standardDateStr);
+
+        const diffTime = today.getTime() - lastDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays <= 20) return false;
+      }
+
       const matchesKhizana =
         !selectedKhizana || m.storageLocation === selectedKhizana;
 
@@ -115,10 +174,9 @@ function RouteComponent() {
 
       return matchesKhizana && matchesSearch && matchesStatus;
     });
-  }, [manuscripts, formValues]);
+  }, [manuscripts, formValues, filter]);
 
   // PAGINATION
-  const { page = 1 } = Route.useSearch();
   const pagination = useMemo(() => {
     return paginate(filteredManuscripts, page, PAGE_SIZE);
   }, [page, filteredManuscripts]);
@@ -158,6 +216,27 @@ function RouteComponent() {
           )}
         />
       </DashboardHeader>
+
+      {filter === "late" && (
+        <div className="flex items-center gap-3 mb-4 bg-red-500/10 text-red-600 p-4 rounded-xl border border-red-500/20">
+          <AlertTriangle className="size-5" />
+          <span className="text-sm font-medium">
+            أنت الآن تعرض المخطوطات المتأخرة فقط (التي توقفت لأكثر من 20 يوماً).
+          </span>
+          <Button
+            variant="ghost"
+            className="mr-auto hover:bg-red-500/20 text-red-700 h-8"
+            onClick={() =>
+              navigate({
+                search: (prev) => ({ ...prev, filter: undefined, page: 1 }),
+              })
+            }
+          >
+            إلغاء هذا الفلتر <X className="size-4 ml-1" />
+          </Button>
+        </div>
+      )}
+
       <DashboardCard>
         <DashboardCardHeader
           className="items-center text-lg md:text-2xl"
@@ -217,7 +296,7 @@ function RouteComponent() {
                               setIsStatusPopoverOpen(false);
                             }}
                             className={cn(
-                              "relative flex gap-4 items-center w-full cursor-pointer select-none  rounded-sm px-2 py-1 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground",
+                              "relative flex gap-4 items-center w-full cursor-pointer select-none rounded-sm px-2 py-1 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground",
                               val === status.value
                                 ? "bg-base-100 font-medium"
                                 : "",

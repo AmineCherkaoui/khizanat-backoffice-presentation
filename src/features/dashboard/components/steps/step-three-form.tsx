@@ -63,26 +63,37 @@ export default function StepThreeForm({
 
       const updatedManuscript = {
         ...manuscript,
-        logs: value.markAsCompleted
-          ? [
-              ...(manuscript.logs ?? []),
-              {
-                id: crypto.randomUUID(),
-                title: "تمت المراجعة العلمية",
+        logs: manuscript.logs?.map((log) => {
+          if (log.id === "step-3") {
+            if (value.markAsCompleted) {
+              return {
+                ...log,
+                status: "completed",
                 user: {
                   name: currentUser.name,
                   role: userRole,
                 },
-                date: new Date(),
-              },
-            ]
-          : (manuscript.logs ?? []),
+                date: new Date().toISOString(),
+                content: "تم تأكيد المراجعة العلمية بنجاح.",
+              };
+            } else {
+              return {
+                ...log,
+                status: "pending",
+                user: null,
+                date: null,
+                content: "في انتظار التدقيق العلمي .",
+              };
+            }
+          }
+          return log;
+        }),
 
         lastDigitalizationDate: new Date(),
         pages: pages,
         lastReviewedPage: currentPage,
         currentStep: value.markAsCompleted ? 4 : 3,
-        stepStatus: "معلق",
+        stepStatus: "قيد التنفيذ",
       };
 
       updateManuscript(updatedManuscript);
@@ -105,18 +116,22 @@ export default function StepThreeForm({
 
     const updatedManuscript = {
       ...manuscript,
-      logs: [
-        ...(manuscript.logs ?? []),
-        {
-          id: crypto.randomUUID(),
-          title: "تم رفض المراجعة العلمية",
-          user: {
-            name: currentUser.name,
-            role: userRole,
-          },
-          date: new Date(),
-        },
-      ],
+      logs: manuscript.logs?.map((log) => {
+        if (log.id === "step-3") {
+          return {
+            ...log,
+            status: "rejected",
+            user: {
+              name: currentUser.name,
+              role: userRole,
+            },
+            date: new Date().toISOString(),
+            content:
+              "تم رفض المراجعة العلمية. المخطوط يحتاج إلى إعادة فحص أو تدقيق إضافي.",
+          };
+        }
+        return log;
+      }),
       pages: pages,
       lastReviewedPage: currentPage,
       stepStatus: "مرفوض",

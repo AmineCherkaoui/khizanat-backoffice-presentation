@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { STEPS, userRoles, users } from "@/constants";
+import { khizanat, STEPS, userRoles, users } from "@/constants";
 import { DashboardHeader } from "@/features/dashboard/components/dashboard-header";
 import StepOneForm from "@/features/dashboard/components/steps/step-one-form";
 import { useStorage } from "@/features/dashboard/store/useStorage";
@@ -10,24 +10,17 @@ export const Route = createFileRoute("/(app)/dashboard/(steps)/step-one")({
   component: RouteComponent,
 });
 
-const DEFAULT_STEPS = [
-  "اكمال الفحص المادي",
-  "التقطت الصور الأولية",
-  "توثيق الحالة",
-  "تحديث نظام الجرد",
-];
-
 const currentUser = users[0];
 const userRole = userRoles.find((u) => u.value === currentUser.role)?.label;
 
 export default function RouteComponent() {
-  const { addManuscript } = useStorage();
+  const { addManuscript, manuscripts } = useStorage();
   const navigate = useNavigate();
   const initialData = {
     title: "",
     author: "",
     scribe: "",
-    releaseDate: "",
+    // releaseDate: "",
     language: "",
     fontType: "",
     classification: "",
@@ -39,20 +32,50 @@ export default function RouteComponent() {
     startsWith: "",
     endsWith: "",
     cover: undefined,
-    reviewing: DEFAULT_STEPS.map((title) => ({
-      title,
-      isChecked: false,
-    })),
   };
 
   async function handleAddManuscript(value: any) {
-    const id = `MS-2026-${crypto.randomUUID()}`;
+    const initialLogs = [
+      {
+        id: "step-1",
+        title: "الفهرسة",
+        status: "completed",
+        user: { name: currentUser.name, role: userRole },
+        date: new Date().toISOString(),
+        content: "تم إدخال البيانات الأساسية للمخطوط وتصنيفه.",
+      },
+      {
+        id: "step-2",
+        title: "الرقمنة",
+        status: "pending",
+        user: null,
+        date: null,
+        content: "في انتظار بدء عملية التصوير الضوئي.",
+      },
+      {
+        id: "step-3",
+        title: "المراجعة العلمية",
+        status: "pending",
+        user: null,
+        date: null,
+        content: "في انتظار التدقيق العلمي .",
+      },
+      {
+        id: "step-4",
+        title: "المعالجة",
+        status: "pending",
+        user: null,
+        date: null,
+        content: "في انتظار المعالجة النهائية .",
+      },
+    ];
+    const id = `MS-2026-${String(manuscripts.length + 1).padStart(3, "0")}`;
     addManuscript({
       id,
       title: value.title,
       author: value.author,
       scribe: value.scribe,
-      releaseDate: value.releaseDate,
+      // releaseDate: value.releaseDate,
       numPages: value.numPages,
       language: value.language,
       fontType: value.fontType,
@@ -63,26 +86,13 @@ export default function RouteComponent() {
       manuscriptStatus: value.status,
       startsWith: value.startsWith,
       endsWith: value.endsWith,
-      reviewing: {
-        stepOne: [...value.reviewing],
-      },
       firstDigitalizationDate: new Date(),
       lastDigitalizationDate: new Date(),
       cover: URL.createObjectURL(value.cover),
-      storageLocation: "01",
+      storageLocation: khizanat[0].value,
       currentStep: 2,
       stepStatus: "قيد التنفيذ",
-      logs: [
-        {
-          id: crypto.randomUUID(),
-          title: "تمت الفهرسة",
-          user: {
-            name: currentUser.name,
-            role: userRole,
-          },
-          date: new Date(),
-        },
-      ],
+      logs: initialLogs,
     });
     navigate({ to: "/dashboard/manuscrits/$id", params: { id } });
     toast.success("تمت الفهرسة بنجاح");

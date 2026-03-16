@@ -1,6 +1,7 @@
 import { STEPS } from "@/constants";
 import type { ManuscriptType } from "@/types/common";
 import { format, isValid, parse, parseISO } from "date-fns";
+
 const arabicMonths = [
   "يناير",
   "فبراير",
@@ -17,6 +18,20 @@ const arabicMonths = [
 ];
 
 export const getManuscriptStats = (data: ManuscriptType[]) => {
+  if (!Array.isArray(data)) {
+    return {
+      generalStats: {
+        total: 0,
+        inCataloging: 0,
+        completed: 0,
+        underMaintenance: 0,
+      },
+      statusDistribution: [],
+      digitalizationEvolution: [],
+      stepsDistribution: [],
+    };
+  }
+
   const statusMap: Record<string, number> = {};
   const timelineMap: Record<string, number> = {};
 
@@ -29,6 +44,7 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
   let maintenanceCount = 0;
   let completedCount = 0;
   let catalogingCount = 0;
+  let proccededCount = 0;
 
   const stepsMap = STEPS.map((step) => ({
     name: step.title,
@@ -37,24 +53,35 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
   }));
 
   data.forEach((item) => {
-    if (item.isCurrentlyMaintaning) maintenanceCount += 1;
+    if (
+      // item.isCurrentlyMaintaning ||
+      item.manuscriptStatus === "ضعيفة"
+    )
+      maintenanceCount += 1;
+    if (item.currentStep > 4) proccededCount += 1;
     if (item.stepStatus === "مكتمل") completedCount += 1;
-    if (item.currentStep === 1) catalogingCount += 1;
+    if (item.currentStep > 1) catalogingCount += 1;
 
     const status = item.stepStatus || "غير محدد";
     statusMap[status] = (statusMap[status] || 0) + 1;
 
     if (item.firstDigitalizationDate) {
-      let dateObj = parseISO(item.firstDigitalizationDate);
-      if (!isValid(dateObj)) {
-        dateObj = parse(item.firstDigitalizationDate, "MM-dd-yyyy", new Date());
+      let dateObj: Date | null = null;
+      const rawDate = item.firstDigitalizationDate;
+
+      if (rawDate instanceof Date) {
+        dateObj = rawDate;
+      } else if (typeof rawDate === "string") {
+        dateObj = parseISO(rawDate);
+        if (!isValid(dateObj)) {
+          dateObj = parse(rawDate, "MM-dd-yyyy", new Date());
+        }
       }
 
-      if (isValid(dateObj)) {
+      if (dateObj && isValid(dateObj)) {
         const key = format(dateObj, "yyyy-MM");
-
-        if (key.startsWith(`${currentYear}`)) {
-          timelineMap[key] = (timelineMap[key] || 0) + 1;
+        if (timelineMap.hasOwnProperty(key)) {
+          timelineMap[key] += 1;
         }
       }
     }
@@ -73,7 +100,7 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
       const [_, month] = key.split("-");
       const monthIndex = parseInt(month, 10) - 1;
       return {
-        name: `${arabicMonths[monthIndex]}`,
+        name: arabicMonths[monthIndex] || "غير معروف",
         dateKey: key,
         value: timelineMap[key],
       };
@@ -95,8 +122,8 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
       inCataloging: catalogingCount,
       completed: completedCount,
       underMaintenance: maintenanceCount,
+      procceded: proccededCount,
     },
-
     statusDistribution,
     digitalizationEvolution,
     stepsDistribution,

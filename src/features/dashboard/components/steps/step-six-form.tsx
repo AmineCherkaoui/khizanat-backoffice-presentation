@@ -2,7 +2,7 @@
 import { userRoles, users } from "@/constants";
 import { cn, sleep } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
-import { Check, Globe, Lock } from "lucide-react";
+import { Check, Download, Globe, Lock } from "lucide-react";
 import { useState } from "react";
 
 import BaseButton from "@/components/common/base-button";
@@ -13,9 +13,11 @@ import {
   DashboardCard,
   DashboardCardHeader,
 } from "@/features/dashboard/components/dashboard-card";
+import { useQRCodeDownload } from "@/hooks/useQRCodeDownload";
 import { getDaysBetween } from "@/lib/date";
 import type { ManuscriptType } from "@/types/common";
 import { useNavigate } from "@tanstack/react-router";
+import { QRCodeCanvas } from "qrcode.react";
 import { toast } from "sonner";
 import { useStorage } from "../../store/useStorage";
 
@@ -121,16 +123,20 @@ export default function StepSixForm({
     },
   });
 
+  const { qrRef, download: qrDownload } = useQRCodeDownload(
+    `https://manuscripts.gov.ma/view/${manuscript.id}`,
+  );
+
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         e.stopPropagation();
       }}
-      className="grid grid-cols-1 gap-4 @5xl:grid-cols-12"
+      className="grid grid-cols-1 gap-4 @5xl:grid-cols-12 items-start"
     >
-      <div className="@5xl:col-span-8 gap-4 flex flex-col">
-        <DashboardCard className="flex flex-col flex-1">
+      <div className="gap-4 flex flex-col  @5xl:sticky @5xl:top-16 @5xl:col-span-8">
+        <DashboardCard className="flex flex-col  ">
           <DashboardCardHeader title="التحكم في الرؤية والوصول" />
           <section className="flex flex-col gap-4">
             <form.Field
@@ -227,35 +233,13 @@ export default function StepSixForm({
                 )}
               />
             </div>
-            <div className="flex justify-between items-center ">
-              <Label
-                htmlFor="enableExport"
-                className="flex flex-col items-start gap-1"
-              >
-                <h3 className="text-black">تصدير (Exportation)</h3>
-                <p className="text-xs text-base-500">
-                  تفعيل حصاد البيانات الوصفية
-                </p>
-              </Label>
-              <form.Field
-                name="enableExport"
-                children={(field) => (
-                  <Switch
-                    id="enableExport"
-                    checked={field.state.value}
-                    onCheckedChange={(checked) => field.handleChange(checked)}
-                    className="data-[state=checked]:bg-primary-500"
-                  />
-                )}
-              />
-            </div>
           </section>
         </DashboardCard>
 
-        <DashboardCard className="flex flex-col flex-1">
+        <DashboardCard className="flex flex-col  ">
           <DashboardCardHeader title="تحسين محركات البحث وقابلية الاكتشاف" />
           <div className="mt-4 flex-1 gap-4 flex flex-col @xl:flex-row">
-            <div className="flex flex-col justify-around w-full">
+            <div className="flex flex-col  w-full">
               <label className="text-sm mb-1">وصف المخطوطة</label>
 
               <form.Field
@@ -272,7 +256,7 @@ export default function StepSixForm({
                 )}
               />
             </div>
-            <div className="flex flex-col justify-around w-full">
+            <div className="flex flex-col  w-full">
               <label className="text-sm mb-1">الكلمات المفتاحية</label>
               <form.Field
                 name="seo.keywords"
@@ -291,7 +275,7 @@ export default function StepSixForm({
           </div>
         </DashboardCard>
 
-        <DashboardCard className="flex flex-col">
+        {/* <DashboardCard className="flex flex-col">
           <DashboardCardHeader title="معاينة الصفحة العامة" />
 
           <div className=" mt-4 flex gap-4">
@@ -331,10 +315,10 @@ export default function StepSixForm({
               </div>
             </div>
           </div>
-        </DashboardCard>
+        </DashboardCard> */}
       </div>
 
-      <div className="flex flex-col gap-4 @5xl:sticky @5xl:top-4 @5xl:col-span-4">
+      <div className="flex flex-col gap-4  @5xl:sticky @5xl:top-4 @5xl:col-span-4">
         <DashboardCard>
           <DashboardCardHeader title="قائمة مراجعة النشر" />
           <div className=" flex flex-col gap-2 mt-4">
@@ -346,8 +330,8 @@ export default function StepSixForm({
               "تم تكوين إعدادات تحسين محركات البحث",
             ].map((item, idx) => (
               <div key={idx} className="flex flex-row gap-2 items-center">
-                <Check className="text-green-600 size-4" />
-                <p className="text-green-600 text-sm">{item}</p>
+                <Check className="text-primary-600 size-4" />
+                <p className="text-primary-600 text-sm">{item}</p>
               </div>
             ))}
           </div>
@@ -355,8 +339,36 @@ export default function StepSixForm({
 
         <DashboardCard className="flex flex-col gap-4">
           <DashboardCardHeader title="الرابط العام (Public URL)" />
+          <div className="mt-4 flex flex-col gap-2">
+            <div className="flex items-center justify-center w-full min-h-52 border border-grey-500 rounded-md">
+              <div ref={qrRef} className="rounded-xl bg-primary-50 p-1">
+                <QRCodeCanvas
+                  value={`https://manuscripts.gov.ma/view/${manuscript.id}`}
+                  size={180}
+                  bgColor="transparent"
+                  marginSize={1}
+                  level="H"
+                  imageSettings={{
+                    src: "/images/logo.png",
+                    height: 32,
+                    width: 32,
+                    excavate: true,
+                  }}
+                  className="rounded-lg"
+                />
+              </div>
+            </div>
+
+            <BaseButton
+              className="bg-transparent border text-base-800 hover:bg-base-50"
+              icon={<Download />}
+              onClick={qrDownload}
+            >
+              تنزيل رمز الإستجابة السريعة
+            </BaseButton>
+          </div>
           <div className="mt-1 flex flex-col gap-4">
-            <p className="text-xs text-gray-500 bg-gray-100 p-2 rounded-md break-all">
+            <p className="text-xs text-center text-gray-500 bg-gray-100 p-2 rounded-md break-all">
               https://manuscripts.gov.ma/view/{manuscript.id}
             </p>
             <button
@@ -364,9 +376,10 @@ export default function StepSixForm({
               onClick={() =>
                 handleCopy(`https://manuscripts.gov.ma/view/${manuscript.id}`)
               }
-              className="px-3 py-1 text-xs text-black border rounded-md hover:bg-gray-100 transition-colors"
+              disabled={copied}
+              className="px-3 py-1 text-xs text-black border rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:hover:bg-white"
             >
-              {copied ? "Copied" : "نسخ الرابط (Copy URL)"}
+              {copied ? "تم نسخ الرابط" : "نسخ الرابط"}
             </button>
           </div>
         </DashboardCard>
@@ -374,7 +387,7 @@ export default function StepSixForm({
         <DashboardCard className="flex flex-col gap-4">
           <DashboardCardHeader title="قائمة المراجعة و المراقبة" />
           <div className="mt-2 flex flex-col gap-2">
-            <StatRow label="الصفحات" value={manuscript.numPages} />
+            <StatRow label="الصفحات" value={manuscript?.pages?.length} />
             <StatRow label="حجم الملف" value={`${totalSizeMB.toFixed(2)} MB`} />
             <StatRow
               label="وقت المعالجة"

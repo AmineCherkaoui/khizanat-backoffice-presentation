@@ -43,13 +43,8 @@ export default function StepTwoForm({
   const totalSizeMB =
     manuscript.pages?.reduce((acc, page) => acc + parseSize(page?.size), 0) ||
     0;
-  const averageSizeMB = manuscript.pages?.length
-    ? totalSizeMB / manuscript.pages.length
-    : 0;
 
-  const SECONDS_PER_MB = 2;
   const remainingPages = manuscript.numPages - (manuscript.pages?.length || 0);
-  const estimatedSeconds = remainingPages * averageSizeMB * SECONDS_PER_MB;
 
   const isUploadComplete = manuscript.pages?.length >= manuscript.numPages;
   const progressPercentage = Math.floor(
@@ -96,24 +91,34 @@ export default function StepTwoForm({
 
       const updatedManuscript = {
         ...latestManuscript,
-        logs: value.markAsCompleted
-          ? [
-              ...(manuscript.logs ?? []),
-              {
-                id: crypto.randomUUID(),
-                title: "تمت الرقمنة",
+        logs: manuscript.logs?.map((log) => {
+          if (log.id === "step-2") {
+            if (value.markAsCompleted) {
+              return {
+                ...log,
+                status: "completed",
                 user: {
                   name: currentUser.name,
                   role: userRole,
                 },
-                date: new Date(),
-              },
-            ]
-          : (manuscript.logs ?? []),
-
+                date: new Date().toISOString(),
+                content: "اكتملت عملية الرقمنة بنجاح.",
+              };
+            } else {
+              return {
+                ...log,
+                status: "pending",
+                user: null,
+                date: null,
+                content: "في انتظار بدء عملية التصوير الضوئي.",
+              };
+            }
+          }
+          return log;
+        }),
         lastDigitalizationDate: new Date(),
         currentStep: value.markAsCompleted ? 3 : 2,
-        stepStatus: "معلق",
+        stepStatus: "قيد التنفيذ",
       };
 
       updateManuscript(updatedManuscript);
@@ -214,16 +219,8 @@ export default function StepTwoForm({
 
             <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
               <StatRow
-                label="الوقت المقدر (للمتبقي)"
-                value={formatTime(estimatedSeconds)}
-              />
-              <StatRow
                 label="الحجم الإجمالي"
                 value={`${totalSizeMB.toFixed(2)} MB`}
-              />
-              <StatRow
-                label="المتوسط لكل صفحة"
-                value={`${averageSizeMB.toFixed(2)} MB`}
               />
             </div>
           </div>

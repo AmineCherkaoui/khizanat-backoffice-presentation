@@ -23,6 +23,7 @@ import { UserRoleSelect } from "@/features/dashboard/components/user-role-select
 import UserForm from "@/features/dashboard/components/users/user-form";
 import { useStorage } from "@/features/dashboard/store/useStorage";
 import { generateUserReport } from "@/features/dashboard/utils/usersStats";
+import { formatDate } from "@/lib/date";
 import { cn, paginate } from "@/lib/utils";
 import { useForm, useStore } from "@tanstack/react-form";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
@@ -142,7 +143,7 @@ function RouteComponent() {
       email: value.email,
       password: value.password,
       role: value.role.value,
-      khizana: value.khizana.value,
+      khizana: value?.khizana?.value || "",
       isActive: true,
     });
     setIsOpen(false);
@@ -219,7 +220,7 @@ function RouteComponent() {
         />
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-1 @md:grid-cols-2  @5xl:grid-cols-5 gap-2">
         {report.map(({ value, icon, label, className }) => (
           <UserState
             value={value}
@@ -244,6 +245,7 @@ function RouteComponent() {
                 <th className="p-4 text-start">البريد الإلكتروني</th>
                 <th className="p-4 text-start">الخزانة</th>
                 <th className="p-4 text-start">الدور</th>
+                <th className="p-4 text-start">آخر دخول</th>
                 <th className="p-4 text-start">الحالة</th>
                 <th className="p-4 text-start">تعديل او مسح</th>
               </tr>
@@ -269,6 +271,12 @@ function RouteComponent() {
                         <Badge variant={userRole?.variant}>
                           {userRole?.label}
                         </Badge>
+                      </td>
+                      <td>
+                        {formatDate({
+                          date: user.lastLogin,
+                          format: "HH:mm dd/MM/yyyy",
+                        })}
                       </td>
                       <td className="p-4">
                         <span className="flex items-center gap-2">
@@ -401,7 +409,7 @@ function UserState({
   return (
     <div
       className={cn(
-        "bg-white border-base-200 border p-4  flex justify-between items-center gap-4 rounded",
+        "bg-white border-base-200 border p-3  flex justify-between items-center gap-4 rounded",
         className,
       )}
     >
@@ -412,7 +420,7 @@ function UserState({
           className="font-bold text-base-800 text-3xl"
         />
       </div>
-      <span className="text-current bg-current/10 p-4 block rounded-lg">
+      <span className="text-current bg-current/10 p-3 block rounded-lg">
         {icon && <CurrentIcon />}
       </span>
     </div>

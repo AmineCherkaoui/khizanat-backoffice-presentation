@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BookOpen, Camera, Image, Shield, Users } from "lucide-react";
 
 export const generateUserReport = (userData: any) => {

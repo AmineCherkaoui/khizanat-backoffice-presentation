@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BaseButton from "@/components/common/base-button";
-import { DatePicker } from "@/components/common/date-picker";
 import { FileUploader } from "@/components/common/file-uploader";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -58,7 +56,7 @@ export default function StepOneForm({
           <DashboardCardHeader title="معلومات  المخطوطة" />
 
           <div className="mt-4 flex flex-col gap-4">
-            <div className="grid grid-cols-1 @xl:grid-cols-2  gap-4">
+            <div className="flex flex-col @xl:grid xl:grid-cols-2 gap-4">
               <form.Field
                 name="title"
                 children={(field) => (
@@ -129,7 +127,7 @@ export default function StepOneForm({
                 )}
               />
 
-              <form.Field
+              {/* <form.Field
                 name="releaseDate"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
@@ -146,7 +144,7 @@ export default function StepOneForm({
                     <FieldError errors={field.state.meta.errors} />
                   </div>
                 )}
-              />
+              /> */}
 
               <form.Field
                 name="language"
@@ -268,7 +266,7 @@ export default function StepOneForm({
               <form.Field
                 name="dimensions"
                 children={(field) => (
-                  <div className="flex flex-col gap-2 col-span-2">
+                  <div className="flex flex-col gap-2 ">
                     <Label className="text-xs font-semibold">المقياس</Label>
                     <Input
                       className="bg-base-100"
@@ -334,6 +332,29 @@ export default function StepOneForm({
         </DashboardCard>
 
         <DashboardCard>
+          <DashboardCardHeader title="الغلاف" />
+
+          <div className="mt-4">
+            <form.Field
+              name="cover"
+              children={(field) => (
+                <div className="flex flex-col gap-2">
+                  <FileUploader
+                    id={field.name}
+                    value={field.state.value}
+                    onChange={(files) => field.handleChange(files[0])}
+                    accept="image/*"
+                    error={!!field.state.meta.errors.length}
+                  />
+                </div>
+              )}
+            />
+          </div>
+        </DashboardCard>
+      </div>
+
+      <div className="flex flex-col gap-4 max-h-fit @5xl:sticky @5xl:top-16 @5xl:col-span-4">
+        <DashboardCard>
           <DashboardCardHeader title="حالة  المخطوطة" />
 
           <form.Field
@@ -341,7 +362,7 @@ export default function StepOneForm({
             children={(field) => (
               <div className="flex flex-col gap-3 mt-4">
                 <div
-                  className="grid grid-cols-1 @md:grid-cols-3 gap-3"
+                  className="grid grid-cols-1  gap-3"
                   role="radiogroup"
                   aria-labelledby="status-label"
                 >
@@ -386,69 +407,6 @@ export default function StepOneForm({
             )}
           />
         </DashboardCard>
-
-        <DashboardCard>
-          <DashboardCardHeader title="الغلاف" />
-
-          <div className="mt-4">
-            <form.Field
-              name="cover"
-              children={(field) => (
-                <div className="flex flex-col gap-2">
-                  <FileUploader
-                    id={field.name}
-                    value={field.state.value}
-                    onChange={(files) => field.handleChange(files[0])}
-                    accept="image/*"
-                    error={!!field.state.meta.errors.length}
-                  />
-                </div>
-              )}
-            />
-          </div>
-        </DashboardCard>
-      </div>
-
-      <div className="flex flex-col gap-4 max-h-fit @5xl:sticky @5xl:top-16 @5xl:col-span-4 ">
-        <DashboardCard>
-          <DashboardCardHeader title="قائمة المراجعة و المراقبة" />
-          <div className="mt-6">
-            <form.Field
-              name="reviewing"
-              children={(field) => (
-                <div className="grid grid-cols-1 gap-3">
-                  {field.state.value.map((review, index) => (
-                    <div
-                      key={review.title}
-                      className="flex items-center gap-3 "
-                    >
-                      <Checkbox
-                        id={`review-${review.title}`}
-                        checked={review.isChecked}
-                        onCheckedChange={(checked) => {
-                          const review = [...field.state.value];
-                          review[index] = {
-                            ...review[index],
-                            isChecked: !!checked,
-                          };
-                          field.handleChange(review);
-                        }}
-                      />
-
-                      <Label
-                        htmlFor={`review-${review.title}`}
-                        className="text-xs font-medium cursor-pointer leading-none"
-                      >
-                        {review.title}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              )}
-            />
-          </div>
-        </DashboardCard>
-
         <DashboardCard className="bg-primary-50/50 border border-primary-200">
           <DashboardCardHeader title="الإجراءات" className="text-primary-500" />
 
