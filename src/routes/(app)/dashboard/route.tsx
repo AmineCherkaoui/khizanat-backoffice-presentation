@@ -5,7 +5,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { UserCard } from "@/features/dashboard/components/user-card";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(app)/dashboard")({
@@ -22,7 +21,6 @@ function DashboardLayout() {
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex justify-between items-center w-full gap-2 ">
               <SearchInput placeholder="البحث عن مخطوطات أو أرشيفات أو معرفات" />
-              <UserCard />
             </div>
           </div>
         </header>

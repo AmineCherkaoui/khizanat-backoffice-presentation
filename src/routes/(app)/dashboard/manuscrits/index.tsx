@@ -359,7 +359,13 @@ function RouteComponent() {
                   return (
                     <tr
                       key={manuscript.id}
-                      className="not-last:border-b border-base-300 hover:bg-base-100 transition-colors duration-200"
+                      onClick={() =>
+                        navigate({
+                          to: "/dashboard/manuscrits/$id",
+                          params: { id: manuscript.id },
+                        })
+                      }
+                      className="not-last:border-b border-base-300 hover:bg-base-100 transition-colors duration-200 cursor-pointer"
                     >
                       <td className="p-4">{manuscript.id}</td>
                       <td className="p-4">{manuscript.title}</td>
@@ -408,7 +414,9 @@ function RouteComponent() {
                       </td>
 
                       <td className="p-4">{manuscript.numPages} صفحة</td>
-                      <td className="p-4">
+
+                      {/* 4. Add stopPropagation here so clicking the menu doesn't trigger the row click */}
+                      <td className="p-4" onClick={(e) => e.stopPropagation()}>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Ellipsis className="cursor-pointer" />

@@ -2,6 +2,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroupLabel,
   SidebarHeader,
 } from "@/components/ui/sidebar";
@@ -14,7 +15,8 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { SIDEBAR_LINKS, STEPS } from "@/constants";
+import { SIDEBAR_LINKS, STEPS, users } from "@/constants";
+import { UserCard } from "@/features/dashboard/components/user-card";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
@@ -37,6 +39,9 @@ export default function DashboardSidebar({
         <SidebarNavigation onLinkChange={closeSideBar} />
         <SidebarSteps onLinkChange={closeSideBar} />
       </SidebarContent>
+      <SidebarFooter>
+        <UserCard user={users[0]} />
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -93,7 +93,7 @@ function RouteComponent() {
           <DialogTrigger asChild>
             <button className=" flex items-center justify-center gap-2 bg-primary-500 hover:bg-primary-600 text-white w-full @xl:max-w-fit py-1.5  px-4 rounded cursor-pointer">
               <Plus className="size-4 text-current" />
-              <span className="truncate">إضافة مستخدم</span>
+              <span className="truncate">إضافة خزانة</span>
             </button>
           </DialogTrigger>
           <DialogContent className="max-w-full max-h-full h-full rounded-none sm:rounded-3xl sm:max-w-2xl sm:h-fit sm:max-h-2xl">
