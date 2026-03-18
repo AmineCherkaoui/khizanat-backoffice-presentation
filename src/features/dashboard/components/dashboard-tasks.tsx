@@ -10,6 +10,10 @@ const badgeVariant: Record<TaskStatus, BadgeVariant> = {
   "قيد التنفيذ": "info",
   متاخر: "warning",
   مكتمل: "success",
+  جيدة: "success",
+  متوسطة: "warning",
+  ضعيفة: "danger",
+  مرفوض: "danger",
 };
 
 export function Task({ task, className }: { task: any; className?: string }) {

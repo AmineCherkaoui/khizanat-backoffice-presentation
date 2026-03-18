@@ -39,6 +39,7 @@ import {
   ChevronRight,
   ChevronsUpDown,
   Ellipsis,
+  Plus,
   SquarePen,
   Trash2,
   X,
@@ -116,7 +117,6 @@ function RouteComponent() {
     typeof val === "object" ? val?.value : val;
 
   useEffect(() => {
-    // FIX: Do not navigate and reset page=1 on the very first component mount
     if (isFirstRender.current) {
       isFirstRender.current = false;
       return;
@@ -206,15 +206,23 @@ function RouteComponent() {
         title="المخطوطات"
         description="تصفح وإدارة جميع المخطوطات المسجلة"
       >
-        <form.Field
-          name="khizana"
-          children={(field) => (
-            <KhizanaSelect
-              value={field.state.value}
-              onChange={(val) => field.handleChange(val)}
-            />
-          )}
-        />
+        <div className="flex gap-2 items-center">
+          <form.Field
+            name="khizana"
+            children={(field) => (
+              <KhizanaSelect
+                value={field.state.value}
+                onChange={(val) => field.handleChange(val)}
+              />
+            )}
+          />
+          <Link
+            to="/dashboard/step-one"
+            className="bg-primary-500 text-white rounded "
+          >
+            <Plus className="size-6" />
+          </Link>
+        </div>
       </DashboardHeader>
 
       {filter === "late" && (
