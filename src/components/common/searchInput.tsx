@@ -20,6 +20,7 @@ export function SearchInput({
   onChange,
   className = "",
   icon,
+  ...props
 }: SearchInputProps) {
   return (
     <InputGroup
@@ -29,6 +30,7 @@ export function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
+        {...props}
       />
       <InputGroupAddon>{icon ?? <Search />}</InputGroupAddon>
     </InputGroup>

@@ -5,13 +5,49 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Outlet,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/(app)/dashboard")({
   component: DashboardLayout,
 });
 
 function DashboardLayout() {
+  const navigate = useNavigate();
+  const routerState = useRouterState();
+
+  const currentSearchParam = (routerState.location.search as any)?.search || "";
+  const [searchValue, setSearchValue] = useState(currentSearchParam);
+
+  useEffect(() => {
+    setSearchValue(currentSearchParam);
+  }, [currentSearchParam]);
+
+  const executeSearch = () => {
+    if (searchValue !== currentSearchParam) {
+      navigate({
+        to: "/dashboard/manuscrits",
+        search: (prev: any) => ({
+          ...prev,
+          search: searchValue || undefined,
+          page: 1,
+        }),
+      });
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      executeSearch();
+      e.currentTarget.blur();
+    }
+  };
+
   return (
     <SidebarProvider>
       <DashboardSidebar />
@@ -20,7 +56,13 @@ function DashboardLayout() {
           <SidebarTrigger className="hover:bg-white hover:text-primary-600" />
           <div className="flex justify-between items-center w-full gap-2">
             <div className="flex justify-between items-center w-full gap-2 ">
-              <SearchInput placeholder="البحث عن مخطوطات أو أرشيفات أو معرفات" />
+              <SearchInput
+                placeholder="البحث عن مخطوطات "
+                value={searchValue}
+                onChange={(val: string) => setSearchValue(val)}
+                onKeyDown={handleKeyDown}
+                onBlur={executeSearch}
+              />
             </div>
           </div>
         </header>

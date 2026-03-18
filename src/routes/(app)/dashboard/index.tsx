@@ -179,7 +179,6 @@ function RouteComponent() {
         <form.Field
           name="khizana"
           children={(field) => (
-            // 5. Pass state directly to the select just like the working component
             <KhizanaSelect
               value={field.state.value}
               onChange={(val) => field.handleChange(val)}
