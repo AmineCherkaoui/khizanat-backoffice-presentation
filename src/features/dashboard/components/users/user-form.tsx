@@ -29,6 +29,7 @@ export default function UserForm({
       toast.success("تم حفظ البيانات بنجاح");
     },
   });
+  console.log(initialData);
 
   return (
     <form

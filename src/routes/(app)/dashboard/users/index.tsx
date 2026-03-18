@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
-import { khizanat, userRoles } from "@/constants";
+import { userRoles } from "@/constants";
 import {
   DashboardCard,
   DashboardCardHeader,
@@ -56,7 +56,7 @@ function RouteComponent() {
   const searchParams = Route.useSearch();
   const navigate = useNavigate({ from: Route.fullPath });
 
-  const { users, addUser, updateUser, deleteUser, toggleUserActive } =
+  const { users, khizanat, addUser, updateUser, deleteUser, toggleUserActive } =
     useStorage();
 
   // FILTER
@@ -151,12 +151,12 @@ function RouteComponent() {
   // UPDATE USER
   function handleUpdateUser(value: any) {
     updateUser({
-      id: value.id,
-      name: value.name,
-      email: value.email,
-      password: value.password,
-      role: value.role.value,
-      khizana: value.khizana.value,
+      id: value?.id,
+      name: value?.name,
+      email: value?.email,
+      password: value?.password,
+      role: value?.role?.value,
+      khizana: value?.khizana?.value || "",
       isActive: true,
     });
     setUpdateUserModal(null);
