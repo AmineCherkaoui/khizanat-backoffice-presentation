@@ -18,7 +18,7 @@ import KhizanaForm from "@/features/dashboard/components/khizanat/khizana-form";
 import { useStorage } from "@/features/dashboard/store/useStorage";
 import { cn } from "@/lib/utils";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Edit, MapPin, ShieldCheck, Trash2, Users } from "lucide-react";
+import { Edit, Info, MapPin, ShieldCheck, Trash2, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
@@ -89,6 +89,7 @@ function KhizanaDetailsPage() {
       city: formValues.city,
       managerId: Number(formValues.managerId),
       totalOfManuscript: Number(formValues.totalOfManuscript),
+      description: formValues.description,
     };
 
     updateKhizana(updatedKhizana);
@@ -171,6 +172,14 @@ function KhizanaDetailsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <DashboardCard className="md:col-span-2">
             <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1 text-base-500">
+                <div className="flex items-center gap-2">
+                  <Info className="size-5" />
+                  <span className="text-lg font-medium">الوصف</span>
+                </div>
+                <span className="text-base-800">{khizana?.description}</span>
+              </div>
+
               <div className="flex items-center gap-2 text-base-500">
                 <MapPin className="size-5" />
                 <span className="font-medium text-lg">

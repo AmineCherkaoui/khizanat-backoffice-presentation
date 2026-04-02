@@ -25,7 +25,7 @@ function RouteComponent() {
   return (
     <>
       <DashboardHeader
-        title={`المرحلة ${STEPS[5].id} • ${STEPS[5].title}`}
+        title={`المرحلة ${STEPS[3]?.id} • ${STEPS[3]?.title}`}
         description="الفهرسة وإدراج البيانات الوصفية"
       />
 

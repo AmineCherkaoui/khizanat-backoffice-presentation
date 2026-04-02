@@ -51,6 +51,7 @@ function RouteComponent() {
     city: "",
     managerId: "",
     totalOfManuscript: 0,
+    description: "",
   };
 
   function handleAddKhizana(formValues: any) {
@@ -65,6 +66,7 @@ function RouteComponent() {
       city: formValues.city,
       managerId: selectedManager ? selectedManager.id : null,
       totalOfManuscript: Number(formValues.totalOfManuscript),
+      description: formValues.description,
     };
 
     addKhizana(newKhizana, selectedManager?.id);
@@ -149,72 +151,6 @@ function RouteComponent() {
 // ----------------------------------------------------------------------
 // Card Component
 // ----------------------------------------------------------------------
-// function KhizanaCard({ khizana, index }: { khizana: any; index: number }) {
-//   const { users } = useStorage();
-
-//   const managerUser = users.find((u) => u.id === khizana.managerId);
-//   const managerName = managerUser
-//     ? managerUser.name
-//     : khizana.manager || "غير محدد";
-
-//   const digitizationPercentage =
-//     index === 0
-//       ? 67
-//       : index === 1
-//         ? 30
-//         : index === 2
-//           ? 12
-//           : Math.floor(Math.random() * 50) + 10;
-//   const digitizedAmount = Math.floor(
-//     (khizana.totalOfManuscript * digitizationPercentage) / 100,
-//   );
-
-//   const referenceCode = khizana.value;
-
-//   return (
-//     <div
-//       className={cn(
-//         "bg-white rounded-lg p-6 flex flex-col gap-4 relative transition-all text-right border border-base-300 hover:border-base-500",
-//       )}
-//     >
-//       <div className="flex flex-col gap-1 mb-2">
-//         <h3 className={cn("text-lg font-bold text-primary-500")}>
-//           {khizana.label}
-//         </h3>
-//         <div className="flex items-center justify-start gap-1 text-base-400 text-xs font-medium">
-//           <MapPin className="size-3 ml-1" />
-//           <span>
-//             {khizana.region} • {khizana.city}
-//           </span>
-//         </div>
-//       </div>
-
-//       <div className="flex flex-col gap-3 text-sm">
-//         <div className="flex justify-between items-center mb-2">
-//           <span className="text-base-500 text-xs font-semibold">
-//             الرمز المرجعي
-//           </span>
-//           <span className="font-bold text-base-800 text-xs">
-//             {referenceCode}
-//           </span>
-//         </div>
-
-//         <AnimatedProgressBar
-//           current={digitizedAmount}
-//           total={Number(khizana.totalOfManuscript)}
-//           label="إجمالي الرقمنة"
-//           className="text-primary-500"
-//           barClassName="bg-primary-500"
-//         />
-//       </div>
-
-//       <div className="border-t border-base-100 mt-4 pt-4 flex justify-between items-center text-xs">
-//         <span className="text-base-500 font-semibold">الشخص المسؤول</span>
-//         <span className="text-primary-600 font-medium">{managerName}</span>
-//       </div>
-//     </div>
-//   );
-// }
 
 function KhizanaCard({ khizana, index }: { khizana: any; index: number }) {
   const { users, manuscripts } = useStorage();

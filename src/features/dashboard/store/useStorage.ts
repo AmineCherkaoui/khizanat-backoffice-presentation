@@ -136,7 +136,7 @@ export const useStorage = create<StoreType>()(
             m.id === manuscriptId
               ? {
                   ...m,
-                  pages: m.pages.filter((p: any) => p.id !== pageId),
+                  pages: m.pages?.filter((p: any) => p?.id !== pageId),
                 }
               : m,
           ),

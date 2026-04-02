@@ -69,30 +69,35 @@ export function BaseModal({
       {trigger && <VisualTrigger asChild>{trigger}</VisualTrigger>}
       <VisualContent
         className={cn(
+          "flex flex-col outline-none overflow-hidden",
           variant === "alert" && "border-destructive/10",
-          isDesktop ? "rounded-4xl" : "rounded-t-3xl",
+          isDesktop
+            ? "rounded-4xl max-h-[80dvh] p-0!"
+            : "rounded-t-3xl max-h-[96dvh]",
         )}
       >
-        <VisualHeader className="text-right">
-          <VisualTitle className={cn("space-y-4 text-base-700")}>
-            {variant === "alert" && (
-              <span className="p-2 rounded-full bg-destructive/10 inline-flex ">
-                <CircleAlert className=" text-destructive size-7 " />
-              </span>
+        <div className="flex-1 overflow-y-auto p-6 md:p-8">
+          <VisualHeader className="text-right">
+            <VisualTitle className={cn("space-y-4 text-base-700")}>
+              {variant === "alert" && (
+                <span className="p-2 rounded-full bg-destructive/10 inline-flex ">
+                  <CircleAlert className=" text-destructive size-7 " />
+                </span>
+              )}
+              <p>{title}</p>
+            </VisualTitle>
+            {description && (
+              <VisualDescription>{description}</VisualDescription>
             )}
-            <p>{title}</p>
-          </VisualTitle>
-          {description && <VisualDescription>{description}</VisualDescription>}
-        </VisualHeader>
+          </VisualHeader>
 
-        {children && (
-          <div className="px-4 py-4 sm:px-0 text-right">{children}</div>
-        )}
+          {children && <div className="py-4 text-right">{children}</div>}
+        </div>
 
         <div
           className={cn(
-            "flex  gap-2 w-full",
-            isDesktop ? "flex-row-reverse pt-8" : "flex-col p-8",
+            "flex gap-2 w-full p-6 md:p-8 md:pt-0 pt-4",
+            isDesktop ? "flex-row-reverse" : "flex-col",
           )}
         >
           <BaseButton

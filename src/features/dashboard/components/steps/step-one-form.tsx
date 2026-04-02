@@ -10,7 +10,16 @@ import {
 import { manuscriptSchema } from "@/features/dashboard/schemas/manuscript";
 import { cn } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { BaseModal } from "@/components/common/base-modal";
+import { ComboboxSelect } from "@/components/common/ComboboxSelect";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+const CENTURIES = Array.from({ length: 21 }, (_, i) => ({
+  value: `${i + 1}`,
+  label: `القرن ${i + 1}`,
+}));
 
 const STATUS_STYLES = {
   ضعيفة:
@@ -29,6 +38,10 @@ export default function StepOneForm({
   initialData: any;
   onSubmit?: (value: any) => void;
 }) {
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isSubmittingActual, setIsSubmittingActual] = useState(false);
+  const [pendingData, setPendingData] = useState<any>(null);
+
   const form = useForm({
     defaultValues: initialData,
     validators: {
@@ -36,11 +49,26 @@ export default function StepOneForm({
     },
 
     onSubmit: async ({ value }) => {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
-      form.reset();
-      onSubmit?.(value);
+      console.log(value);
+      setPendingData(value);
+      setShowConfirmation(true);
     },
   });
+
+  const handleConfirmSave = async () => {
+    if (!pendingData) return;
+
+    setIsSubmittingActual(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      form.reset();
+      await onSubmit?.(pendingData);
+      setShowConfirmation(false);
+      setPendingData(null);
+    } finally {
+      setIsSubmittingActual(false);
+    }
+  };
 
   return (
     <form
@@ -61,10 +89,7 @@ export default function StepOneForm({
                 name="title"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       عنوان المخطوطة
                     </Label>
                     <Input
@@ -84,10 +109,7 @@ export default function StepOneForm({
                 name="author"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       اسم المؤلف
                     </Label>
                     <Input
@@ -108,10 +130,7 @@ export default function StepOneForm({
                 validators={{ onChangeAsync: manuscriptSchema.shape.scribe }}
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       اسم الناسخ
                     </Label>
                     <Input
@@ -127,30 +146,33 @@ export default function StepOneForm({
                 )}
               />
 
-              {/* <form.Field
-                name="releaseDate"
+              <form.Field
+                name="century"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">
-                      تاريخ الإصدار
-                    </Label>
+                    <Label className="text-md">الحقبة (القرن)</Label>
 
-                    <DatePicker
-                      className="bg-base-100"
-                      ariaInvalid={!field.state.meta.isValid}
-                      value={field.state.value}
-                      onChange={(date: any) => field.handleChange(date as any)}
+                    <ComboboxSelect
+                      ComboboxInputClassName={"bg-base-100"}
+                      items={CENTURIES}
+                      placeholder="اختر القرن..."
+                      value={
+                        CENTURIES.find((c) => c.value === field.state.value) ??
+                        null
+                      }
+                      onChange={(item) => field.handleChange(item?.value ?? "")}
                     />
+
                     <FieldError errors={field.state.meta.errors} />
                   </div>
                 )}
-              /> */}
+              />
 
               <form.Field
                 name="language"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">اللغة</Label>
+                    <Label className="text-md">اللغة</Label>
                     <Input
                       className="bg-base-100"
                       id={field.name}
@@ -168,10 +190,7 @@ export default function StepOneForm({
                 name="classification"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       التصنيف العلمي المجالي
                     </Label>
                     <Input
@@ -191,7 +210,7 @@ export default function StepOneForm({
                 name="fontType"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">نوع الخط</Label>
+                    <Label className="text-md">نوع الخط</Label>
                     <Input
                       className="bg-base-100"
                       id={field.name}
@@ -209,9 +228,7 @@ export default function StepOneForm({
                 name="numPages"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">
-                      عدد الصفحات الكلي
-                    </Label>
+                    <Label className="text-md">عدد الصفحات الكلي</Label>
                     <Input
                       type="number"
                       className="bg-base-100"
@@ -230,7 +247,7 @@ export default function StepOneForm({
                 name="material"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">الوعاء </Label>
+                    <Label className="text-md">نوع الغلاف </Label>
                     <Input
                       className="bg-base-100"
                       id={field.name}
@@ -248,7 +265,7 @@ export default function StepOneForm({
                 name="linesPerPage"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label className="text-xs font-semibold">المسطرة</Label>
+                    <Label className="text-md">المسطرة</Label>
                     <Input
                       type="number"
                       className="bg-base-100"
@@ -266,8 +283,8 @@ export default function StepOneForm({
               <form.Field
                 name="dimensions"
                 children={(field) => (
-                  <div className="flex flex-col gap-2 ">
-                    <Label className="text-xs font-semibold">المقياس</Label>
+                  <div className="flex flex-col gap-2 col-span-full ">
+                    <Label className="text-md">مقياس المخطوط</Label>
                     <Input
                       className="bg-base-100"
                       placeholder="16/20"
@@ -286,10 +303,7 @@ export default function StepOneForm({
                 name="startsWith"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       أوله
                     </Label>
                     <textarea
@@ -309,10 +323,7 @@ export default function StepOneForm({
                 name="endsWith"
                 children={(field) => (
                   <div className="flex flex-col gap-2">
-                    <Label
-                      className="text-xs font-semibold"
-                      htmlFor={field.name}
-                    >
+                    <Label className="text-md" htmlFor={field.name}>
                       آخره
                     </Label>
                     <textarea
@@ -388,7 +399,7 @@ export default function StepOneForm({
                           <Label
                             htmlFor={`status-${option}`}
                             className={cn(
-                              "flex items-center justify-center rounded-lg border py-3 px-4 transition-all cursor-pointer text-center font-medium border-base-200",
+                              "flex items-center justify-center rounded-lg border py-3 px-4 transition-all cursor-pointer text-center font-medium text-md border-base-200",
                               "peer-checked:border-current ",
                               STATUS_STYLES[option],
                               !field.state.meta.isValid && "border-red-500",
@@ -417,17 +428,109 @@ export default function StepOneForm({
                 <BaseButton
                   type="submit"
                   disabled={!canSubmit}
-                  isLoading={isSubmitting}
+                  isLoading={isSubmitting || isSubmittingActual}
                   loadingText="جاري الحفظ..."
                   className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full"
                 >
-                  حفظ التقدم
+                  حفظ
                 </BaseButton>
               )}
             />
           </div>
         </DashboardCard>
       </div>
+      <BaseModal
+        open={showConfirmation}
+        onOpenChange={setShowConfirmation}
+        title="تأكيد معلومات المخطوطة"
+        description="يرجى مراجعة المعلومات المدخلة قبل الحفظ النهائي."
+        confirmText="تأكيد وحفظ"
+        cancelText="تعديل المعلومات"
+        isLoading={isSubmittingActual}
+        onConfirm={handleConfirmSave}
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-right dir-rtl">
+          {[
+            { label: "عنوان المخطوطة", value: pendingData?.title },
+            {
+              label: "الحقبة",
+              value: CENTURIES.find((c) => c.value === pendingData?.century)
+                ?.label,
+            },
+            { label: "اسم المؤلف", value: pendingData?.author },
+            { label: "اسم الناسخ", value: pendingData?.scribe },
+            { label: "اللغة", value: pendingData?.language },
+            { label: "التصنيف العلمي", value: pendingData?.classification },
+            { label: "نوع الخط", value: pendingData?.fontType },
+            { label: "عدد الصفحات", value: pendingData?.numPages },
+            { label: "نوع الغلاف", value: pendingData?.material },
+            { label: "المسطرة", value: pendingData?.linesPerPage },
+            { label: "مقياس المخطوط", value: pendingData?.dimensions },
+          ].map(
+            (item, index) =>
+              item.value && (
+                <div
+                  key={index}
+                  className="flex flex-col gap-1 p-2 rounded-lg bg-base-100/50 border border-base-200"
+                >
+                  <span className="text-sm font-medium text-gray-400 uppercase tracking-tight">
+                    {item.label}
+                  </span>
+                  <span className=" font-medium text-gray-700 truncate">
+                    {item.value}
+                  </span>
+                </div>
+              ),
+          )}
+
+          {pendingData?.status && (
+            <div
+              className={cn(
+                "col-span-full flex flex-col gap-1 p-3 rounded-lg bg-primary-50 border border-primary-200 mt-2",
+                pendingData.status === "جيدة" &&
+                  "bg-green-50 border-green-700 text-green-700",
+                pendingData.status === "متوسطة" &&
+                  "bg-yellow-50 border-yellow-700 text-yellow-700",
+                pendingData.status === "ضعيفة" &&
+                  "bg-red-50 border-red-700 text-red-700",
+              )}
+            >
+              <span className="text-sm font-medium uppercase tracking-tight">
+                حالة المخطوطة
+              </span>
+              <div className={cn("flex items-center gap-2")}>
+                <CheckCircle2 className="size-4" />
+                <span className=" font-bold">{pendingData.status}</span>
+              </div>
+            </div>
+          )}
+
+          {(pendingData?.startsWith || pendingData?.endsWith) && (
+            <div className="col-span-full grid grid-cols-1 gap-3 mt-2">
+              {pendingData?.startsWith && (
+                <div className="flex flex-col gap-1 p-3 rounded-lg bg-base-100 border border-base-200">
+                  <span className="text-sm font-medium text-gray-400 uppercase tracking-tight">
+                    أوله
+                  </span>
+                  <p className=" text-gray-600 line-clamp-2">
+                    {pendingData.startsWith}
+                  </p>
+                </div>
+              )}
+              {pendingData?.endsWith && (
+                <div className="flex flex-col gap-1 p-3 rounded-lg bg-base-100 border border-base-200">
+                  <span className="text-sm font-medium text-gray-400 uppercase tracking-tight">
+                    آخره
+                  </span>
+                  <p className=" text-gray-600 line-clamp-2">
+                    {pendingData.endsWith}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </BaseModal>
     </form>
   );
 }

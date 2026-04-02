@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as appDashboardRouteRouteImport } from './routes/(app)/dashboard/route'
 import { Route as appDashboardIndexRouteImport } from './routes/(app)/dashboard/index'
@@ -31,6 +32,11 @@ import { Route as appDashboardManuscritsIdstepsStepOneRouteImport } from './rout
 import { Route as appDashboardManuscritsIdstepsStepFourRouteImport } from './routes/(app)/dashboard/manuscrits/$id/(steps)/step-four'
 import { Route as appDashboardManuscritsIdstepsStepFiveRouteImport } from './routes/(app)/dashboard/manuscrits/$id/(steps)/step-five'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -156,6 +162,7 @@ const appDashboardManuscritsIdstepsStepFiveRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof appDashboardRouteRouteWithChildren
   '/dashboard/': typeof appDashboardIndexRoute
   '/dashboard/step-five': typeof appDashboardstepsStepFiveRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/dashboard': typeof appDashboardIndexRoute
   '/dashboard/step-five': typeof appDashboardstepsStepFiveRoute
   '/dashboard/step-four': typeof appDashboardstepsStepFourRoute
@@ -202,6 +210,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/(app)/dashboard': typeof appDashboardRouteRouteWithChildren
   '/(app)/dashboard/': typeof appDashboardIndexRoute
   '/(app)/dashboard/(steps)/step-five': typeof appDashboardstepsStepFiveRoute
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/login'
     | '/dashboard'
     | '/dashboard/'
     | '/dashboard/step-five'
@@ -250,6 +260,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/login'
     | '/dashboard'
     | '/dashboard/step-five'
     | '/dashboard/step-four'
@@ -272,6 +283,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/login'
     | '/(app)/dashboard'
     | '/(app)/dashboard/'
     | '/(app)/dashboard/(steps)/step-five'
@@ -296,11 +308,19 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LoginRoute: typeof LoginRoute
   appDashboardRouteRoute: typeof appDashboardRouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -506,6 +526,7 @@ const appDashboardRouteRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LoginRoute: LoginRoute,
   appDashboardRouteRoute: appDashboardRouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport

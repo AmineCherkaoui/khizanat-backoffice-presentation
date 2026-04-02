@@ -2,6 +2,7 @@ import BaseButton from "@/components/common/base-button";
 import { ComboboxSelect } from "@/components/common/ComboboxSelect";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { useStorage } from "@/features/dashboard/store/useStorage";
 import { cn, sleep } from "@/lib/utils";
 import { useForm } from "@tanstack/react-form";
@@ -128,6 +129,27 @@ export default function KhizanaForm({
                 onChange={(e) => field.handleChange(e.target.value)}
                 aria-invalid={!field.state.meta.isValid}
                 placeholder="مثال: فاس"
+                required
+              />
+              <FieldError errors={field.state.meta.errors} />
+            </div>
+          )}
+        />
+
+        <form.Field
+          name="description"
+          children={(field) => (
+            <div className="flex flex-col gap-2">
+              <Label className="text-xs font-semibold" htmlFor={field.name}>
+                الوصف
+              </Label>
+              <Textarea
+                className="bg-base-100 text-right"
+                id={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                aria-invalid={!field.state.meta.isValid}
                 required
               />
               <FieldError errors={field.state.meta.errors} />

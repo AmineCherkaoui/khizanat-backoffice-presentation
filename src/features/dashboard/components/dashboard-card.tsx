@@ -43,7 +43,7 @@ export function DashboardCardHeader({
         {icon && icon}
 
         <div className="space-y-1">
-          <h3 className="font-medium leading-none ">{title}</h3>
+          <h3 className="text-md leading-none font-bold">{title}</h3>
           {description && (
             <p className="text-sm text-base-500 font-medium leading-relaxed">
               {description}

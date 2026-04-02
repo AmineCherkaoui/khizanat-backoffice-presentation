@@ -12,7 +12,7 @@ function RouteComponent() {
 
   return (
     <>
-      <DashboardHeader title={`المرحلة ${STEPS[5].id} • ${STEPS[5].title}`} />
+      <DashboardHeader title={`المرحلة ${STEPS[3]?.id} • ${STEPS[3]?.title}`} />
 
       <StepSixForm manuscript={manuscript} />
     </>

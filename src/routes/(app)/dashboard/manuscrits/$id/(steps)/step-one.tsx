@@ -41,9 +41,7 @@ export default function RouteComponent() {
     title: manuscript.title || "",
     author: manuscript.author || "",
     scribe: manuscript.scribe || "",
-    releaseDate: manuscript?.releaseDate
-      ? new Date(manuscript.releaseDate)
-      : undefined,
+    century: manuscript.century || "",
     language: manuscript.language || "",
     fontType: manuscript.fontType || "",
     classification: manuscript.classification || "",
@@ -64,7 +62,7 @@ export default function RouteComponent() {
       title: values.title,
       author: values.author,
       scribe: values.scribe,
-      releaseDate: values.releaseDate,
+      century: values.century,
       numPages: values.numPages,
       language: values.language,
       fontType: values.fontType,

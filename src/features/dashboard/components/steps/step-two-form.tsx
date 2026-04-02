@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import BaseButton from "@/components/common/base-button";
-import { FileUploader } from "@/components/common/file-uploader";
 import { AnimatedProgressBar } from "@/components/motion/animated-progressbar";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -13,20 +12,13 @@ import { cn, sleep } from "@/lib/utils";
 import type { ManuscriptType } from "@/types/common";
 import { useForm } from "@tanstack/react-form";
 import { useNavigate } from "@tanstack/react-router";
-import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { useStorage } from "../../store/useStorage";
-import ManuscriptPages from "../manuscripts/ManuscriptPages";
+import ManuscriptIndividualUpload from "../manuscripts/ManuscriptIndividualUpload";
 
 const parseSize = (sizeStr: string) => {
   const match = sizeStr?.match(/([\d.]+)/);
   return match ? parseFloat(match[1]) : 0;
-};
-
-const formatTime = (seconds: number) => {
-  if (seconds <= 0) return "مكتمل";
-  if (seconds < 60) return `${Math.ceil(seconds)} ثانية`;
-  return `${Math.ceil(seconds / 60)} دقيقة`;
 };
 
 const currentUser = users[0];
@@ -37,49 +29,24 @@ export default function StepTwoForm({
 }: {
   manuscript: ManuscriptType;
 }) {
-  const { addManuscriptPages, updateManuscript, manuscripts } = useStorage();
+  const { updateManuscript, manuscripts } = useStorage();
   const navigate = useNavigate();
 
+  // Always read live data from the store
+  const liveManuscript =
+    manuscripts.find((m) => m.id === manuscript.id) ?? manuscript;
+
   const totalSizeMB =
-    manuscript.pages?.reduce((acc, page) => acc + parseSize(page?.size), 0) ||
-    0;
+    liveManuscript.pages?.reduce(
+      (acc: number, page: any) => acc + parseSize(page?.size),
+      0,
+    ) || 0;
 
-  const remainingPages = manuscript.numPages - (manuscript.pages?.length || 0);
-
-  const isUploadComplete = manuscript.pages?.length >= manuscript.numPages;
+  const isUploadComplete =
+    (liveManuscript.pages?.length || 0) >= liveManuscript.numPages;
   const progressPercentage = Math.floor(
-    ((manuscript?.pages?.length || 0) / manuscript.numPages) * 100,
+    ((liveManuscript?.pages?.length || 0) / liveManuscript.numPages) * 100,
   );
-
-  const uploadForm = useForm({
-    defaultValues: {
-      attachments: [],
-    },
-    onSubmit: async ({ value }) => {
-      const files: File[] = value.attachments;
-      if (!files?.length) return;
-
-      const newPages = files.map((file, index) => {
-        if (!file) return;
-
-        const imageUrl = URL.createObjectURL(file);
-
-        return {
-          id: manuscript?.pages?.length + index + 1,
-          size: `${(file.size / 1024 / 1024).toFixed(2)} MB`,
-          status: "محملة",
-          url: imageUrl,
-        };
-      });
-
-      await sleep(1000);
-      addManuscriptPages(manuscript.id, newPages);
-
-      uploadForm.reset();
-      navigate({ to: "." });
-      toast.success("تم رفع الصفحات بنجاح");
-    },
-  });
 
   const completedForm = useForm({
     defaultValues: {
@@ -126,7 +93,7 @@ export default function StepTwoForm({
       if (value.markAsCompleted) {
         toast.success("تم حفظ التقدم و التنقل إلى المرحلة التالية بنجاح");
       } else {
-        toast.success("تم حفظ تقدم الفحص بنجاح ");
+        toast.success("تم حفظ  بنجاح ");
       }
 
       navigate({ to: ".." });
@@ -137,66 +104,13 @@ export default function StepTwoForm({
     <div className="grid grid-cols-1 gap-4 @5xl:grid-cols-12">
       <div className="flex flex-col gap-4 @5xl:col-span-8">
         <DashboardCard>
-          <DashboardCardHeader title="تحميل الصفحات الممسوحة" />
-          {isUploadComplete ? (
-            <div className="w-full p-4 border mt-4 rounded bg-muted/20 text-center text-sm text-muted-foreground">
+          <DashboardCardHeader title="تحميل صفحات المخطوطة" />
+          {isUploadComplete && (
+            <div className="w-full p-4 border mt-4 rounded bg-green-50 text-center text-sm font-medium text-green-700">
               تم اكتمال رفع جميع الصفحات المطلوبة ({manuscript.numPages})
             </div>
-          ) : (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                uploadForm.handleSubmit();
-              }}
-              className="mt-4"
-            >
-              <uploadForm.Field
-                name="attachments"
-                children={(field) => (
-                  <div className="flex flex-col gap-2">
-                    <FileUploader
-                      id={field.name}
-                      value={field.state.value}
-                      onChange={(files) => field.handleChange(files)}
-                      accept="image/*"
-                      error={!!field.state.meta.errors.length}
-                      multiple
-                      maxFiles={Math.min(5, remainingPages)}
-                    />
-                    <FieldError errors={field.state.meta.errors} />
-
-                    {!!field.state.value.length && (
-                      <uploadForm.Subscribe
-                        selector={(state) => [
-                          state.canSubmit,
-                          state.isSubmitting,
-                        ]}
-                        children={([canSubmit, isSubmitting]) => (
-                          <BaseButton
-                            type="submit"
-                            disabled={!canSubmit}
-                            isLoading={isSubmitting}
-                            loadingText="جاري تحميل..."
-                            className="w-1/3 bg-primary-500 hover:bg-primary-600 rounded-full"
-                          >
-                            <span className="flex gap-2 items-center">
-                              تحميل <Download className="w-4 h-4" />
-                            </span>
-                          </BaseButton>
-                        )}
-                      />
-                    )}
-                  </div>
-                )}
-              />
-            </form>
           )}
-        </DashboardCard>
-
-        <DashboardCard>
-          <DashboardCardHeader title="الصفحات المحملة" />
-          <ManuscriptPages manuscript={manuscript} />
+          <ManuscriptIndividualUpload manuscript={liveManuscript} />
         </DashboardCard>
       </div>
 
@@ -208,8 +122,8 @@ export default function StepTwoForm({
               <AnimatedProgressBar
                 key="scanned-pages"
                 barClassName="bg-primary-500"
-                current={manuscript?.pages?.length || 0}
-                total={manuscript.numPages}
+                current={liveManuscript?.pages?.length || 0}
+                total={liveManuscript.numPages}
                 label="الصفحات الممسوحة"
               />
               <p className="text-sm text-muted-foreground">
@@ -276,7 +190,7 @@ export default function StepTwoForm({
                   loadingText="جاري الحفظ..."
                   className="w-full bg-green-600 hover:bg-green-700 text-white rounded-full"
                 >
-                  {manuscript.currentStep > 2 ? "تحديث الحالة" : "حفظ وإنهاء"}
+                  {manuscript.currentStep > 2 ? "تحديث" : "حفظ"}
                 </BaseButton>
               )}
             />

@@ -295,7 +295,7 @@ export default function StepFourForm({
                   className="flex items-center gap-2 font-medium text-primary-600 hover:text-primary-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
                   <ChevronRight className="size-4" />
-                  <span>الصفحة السابقة</span>
+                  <span className="hidden sm:block">الصفحة السابقة</span>
                 </button>
 
                 <p className="text-black font-bold">
@@ -311,7 +311,7 @@ export default function StepFourForm({
                   disabled={currentPage >= totalPages}
                   className="flex items-center gap-2 font-medium text-primary-600 hover:text-primary-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  <span>الصفحة التالية</span>
+                  <span className="hidden sm:block">الصفحة التالية</span>
                   <ChevronLeft className="size-4" />
                 </button>
               </div>
@@ -331,7 +331,7 @@ export default function StepFourForm({
                 <div className="mt-0.5">
                   <MessageSquareWarning className="size-4 text-yellow-600" />
                 </div>
-                <p className="w-full text-black text-sm leading-relaxed whitespace-pre-wrap">
+                <p className="w-full text-black text-sm leading-relaxed ">
                   {currentPageData?.observation}
                 </p>
               </div>

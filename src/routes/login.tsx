@@ -1,19 +1,15 @@
+import { LoginPage } from "@/features/auth/components/login-page";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/login")({
+  component: LoginPage,
   beforeLoad: () => {
     const token = localStorage.getItem("authToken");
-
-    if (!token) {
+    if (token) {
       throw redirect({
-        to: "/login",
+        to: "/dashboard",
         replace: true,
       });
     }
-
-    throw redirect({
-      to: "/dashboard",
-      replace: true,
-    });
   },
 });

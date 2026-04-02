@@ -45,6 +45,7 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
   let completedCount = 0;
   let catalogingCount = 0;
   let proccededCount = 0;
+  let digitalizedCount = 0;
 
   const stepsMap = STEPS.map((step) => ({
     name: step.title,
@@ -59,6 +60,7 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
     )
       maintenanceCount += 1;
     if (item.currentStep > 4) proccededCount += 1;
+    if (item.currentStep > 3) digitalizedCount += 1;
     if (item.stepStatus === "مكتمل") completedCount += 1;
     if (item.currentStep > 1) catalogingCount += 1;
 
@@ -123,6 +125,7 @@ export const getManuscriptStats = (data: ManuscriptType[]) => {
       completed: completedCount,
       underMaintenance: maintenanceCount,
       procceded: proccededCount,
+      digitalized: digitalizedCount,
     },
     statusDistribution,
     digitalizationEvolution,

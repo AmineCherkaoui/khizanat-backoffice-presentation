@@ -50,26 +50,26 @@ export const STEPS = [
   {
     id: "3",
     to: "step-three",
-    title: "المراجعة العلمية",
-    worker: "المراجع العلمي",
+    title: "مراجعة الرقمنة",
+    worker: "مراجع رقمنة",
   },
+
+  // {
+  //   id: "4",
+  //   to: "step-four",
+  //   title: " المعالجة",
+  //   worker: "مسؤول  المعالجة",
+  // },
+
+  // {
+  //   id: "5",
+  //   to: "step-five",
+  //   title: "المراجعة اللغوية",
+  //   worker: "المُدقِّق العلمي",
+  // },
 
   {
     id: "4",
-    to: "step-four",
-    title: " المعالجة",
-    worker: "مسؤول  المعالجة",
-  },
-
-  {
-    id: "5",
-    to: "step-five",
-    title: "المراجعة اللغوية",
-    worker: "المُدقِّق العلمي",
-  },
-
-  {
-    id: "6",
     to: "step-six",
     title: "النشر",
     worker: "مسؤول النشر",
@@ -105,6 +105,7 @@ export type Khizana = {
   city: string;
   managerId: number;
   totalOfManuscript: number;
+  description: string;
 };
 
 export const users = [
@@ -389,30 +390,38 @@ export const khizanat: Khizana[] = [
     city: "تمكروت (زاكورة)",
     managerId: 12,
     totalOfManuscript: 4777,
+    description:
+      "تعد من أغنى الخزانات العلمية بالجنوب المغربي، أسسها الشيخ محمد بن ناصر الدرعي، وتضم مخطوطات نادرة في الفقه، الفلك، والطب.",
   },
   {
     label: "خزانة القرويين بفاس",
     value: "KH-002",
     region: "فاس - مكناس",
     city: "فاس",
-    managerId: 21, // مدير جديد
+    managerId: 21,
     totalOfManuscript: 4000,
+    description:
+      "واحدة من أقدم المكتبات في العالم، تقع داخل جامعة القرويين، وتضم ذخائر من المخطوطات التي تعود للعصور الذهبية للحضارة الإسلامية.",
   },
   {
     label: "خزانة ابن يوسف بمراكش",
     value: "KH-003",
     region: "مراكش - آسفي",
     city: "مراكش",
-    managerId: 22, // مدير جديد
+    managerId: 22,
     totalOfManuscript: 2736,
+    description:
+      "مرتبطة بمدرسة ابن يوسف التاريخية، وتعتبر مركزا ثقافيا بارزا في قلب مراكش يجمع بين علوم الدين واللغة العربية.",
   },
   {
     label: "خزانة الزاوية الحمزية العياشية بميدلت",
     value: "KH-004",
     region: "درعة - تافيلالت",
     city: "ميدلت",
-    managerId: 23, // مدير جديد
+    managerId: 23,
     totalOfManuscript: 1540,
+    description:
+      "خزانة عريقة تابعة للزاوية العياشية، اشتهرت برحلة العياشي المعروفة وبكونها منارة علمية في منطقة جبال الأطلس الكبير.",
   },
   {
     label: "خزانة المسجد الأعظم بوزان",
@@ -421,6 +430,8 @@ export const khizanat: Khizana[] = [
     city: "وزان",
     managerId: 1,
     totalOfManuscript: 1386,
+    description:
+      "تعكس الدور العلمي لمدينة وزان (دار الضمانة)، وتضم مجموعات قيمة من المخطوطات التي تبرز نشاط الزاوية الوزانية.",
   },
   {
     label: "خزانة المسجد الأعظم بمكناس",
@@ -429,6 +440,8 @@ export const khizanat: Khizana[] = [
     city: "مكناس",
     managerId: 5,
     totalOfManuscript: 925,
+    description:
+      "تأسست في عهد السلطان المولى إسماعيل، وتضم تراثا فكريا هاما يغطي مختلف العلوم الشرعية والأدبية.",
   },
   {
     label: "خزانة المسجد الأعظم بتازة",
@@ -437,46 +450,58 @@ export const khizanat: Khizana[] = [
     city: "تازة",
     managerId: 16,
     totalOfManuscript: 703,
+    description:
+      "تحتوي على مخطوطات تاريخية فريدة، وتشهد على الدور العلمي الذي لعبته مدينة تازة كحلقة وصل بين شرق المغرب وغربه.",
   },
   {
     label: "خزانة مولاي ادريس زرهون",
     value: "KH-008",
     region: "فاس - مكناس",
     city: "زرهون",
-    managerId: 24, // مدير جديد
+    managerId: 24,
     totalOfManuscript: 454,
+    description:
+      "خزانة ملحقة بضريح مؤسس الدولة الإدريسية، تكتسي صبغة روحية وتاريخية خاصة وتضم مؤلفات في السيرة والتصوف.",
   },
   {
     label: "خزانة المسجد الأعظم بآسفي",
     value: "KH-009",
     region: "مراكش - آسفي",
     city: "آسفي",
-    managerId: 25, // مدير جديد
+    managerId: 25,
     totalOfManuscript: 410,
+    description:
+      "خزانة تاريخية بمدينة المحيط، حافظت على تراث علمي مهم رغم التحديات والمناخ الرطب للمنطقة الساحلية.",
   },
   {
     label: "خزانة مسجد القصبة بالصويرة",
     value: "KH-010",
     region: "مراكش - آسفي",
     city: "الصويرة",
-    managerId: 26, // مدير جديد
+    managerId: 26,
     totalOfManuscript: 248,
+    description:
+      "تمثل جزءا من الهوية الثقافية لمدينة الصويرة، وتضم وثائق ومخطوطات نادرة تعكس التنوع الثقافي للمدينة.",
   },
   {
     label: "خزانة المسجد الأعظم بسلا",
     value: "KH-011",
     region: "الرباط - سلا - القنيطرة",
     city: "سلا",
-    managerId: 27, // مدير جديد
+    managerId: 27,
     totalOfManuscript: 149,
+    description:
+      "خزانة عريقة في مدينة القراصنة والعلماء، تضم بقايا مكتبات شخصية لعلماء سلا المشهورين.",
   },
   {
     label: "خزانة القايد العيادي بابن جرير",
     value: "KH-012",
     region: "مراكش - آسفي",
     city: "ابن جرير",
-    managerId: 28, // مدير جديد
+    managerId: 28,
     totalOfManuscript: 50,
+    description:
+      "مجموعة خاصة تعود للقائد العيادي، تم الحفاظ عليها كموروث ثقافي محلي يوثق لفترة هامة من تاريخ منطقة الرحامنة.",
   },
 ];
 
@@ -567,7 +592,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-1355",
     stepStatus: "متاخر",
     fontType: "مغربي مبسوط",
-    currentStep: 5, // تم التعديل من 6 إلى 5 لأن 6 أصبح يعني "مكتمل"
+    currentStep: 2,
     size: 20,
     classification: "أدب الرحلات",
     firstDigitalizationDate: "01-02-2026",
@@ -590,7 +615,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-1377",
     stepStatus: "مكتمل",
     fontType: "مغربي مجوهر",
-    currentStep: 6, // تم التعديل من 7 إلى 6
+    currentStep: 2,
     size: 22,
     classification: "علم الاجتماع",
     firstDigitalizationDate: "01-12-2026",
@@ -613,7 +638,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-1020",
     stepStatus: "قيد التنفيذ",
     fontType: "ثلث",
-    currentStep: 4,
+    currentStep: 2,
     size: 16,
     classification: "فلسفة وعلوم",
     firstDigitalizationDate: "10-12-2026",
@@ -636,7 +661,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-0950",
     stepStatus: "متاخر",
     fontType: "كوفي",
-    currentStep: 5,
+    currentStep: 3,
     size: 14,
     classification: "الشعر",
     firstDigitalizationDate: "01-02-2026",
@@ -659,7 +684,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-0847",
     stepStatus: "مكتمل",
     fontType: "نسخ",
-    currentStep: 6, // تم التعديل من 7 إلى 6
+    currentStep: 4, // تم التعديل من 7 إلى 6
     size: 17,
     classification: "الأدب والبلاغة",
     firstDigitalizationDate: "01-12-2026",
@@ -705,7 +730,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-1231",
     stepStatus: "قيد التنفيذ",
     fontType: "نسخ بغدادي",
-    currentStep: 5, // تم التعديل من 6 إلى 5 لأن 6 أصبح يعني "مكتمل"
+    currentStep: 2, // تم التعديل من 6 إلى 5 لأن 6 أصبح يعني "مكتمل"
     size: 15,
     classification: "التاريخ",
     firstDigitalizationDate: "04-12-2026",
@@ -728,7 +753,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-0967",
     stepStatus: "مكتمل",
     fontType: "ديواني",
-    currentStep: 6, // تم التعديل من 7 إلى 6
+    currentStep: 3, // تم التعديل من 7 إلى 6
     size: 18,
     classification: "الفن والأدب",
     firstDigitalizationDate: "01-11-2026",
@@ -751,7 +776,7 @@ export const MANUSCRIPTS = [
     releaseDate: "01-01-0987",
     stepStatus: "متاخر",
     fontType: "نسخ",
-    currentStep: 4,
+    currentStep: 2,
     size: 16,
     classification: "الببليوغرافيا",
     firstDigitalizationDate: "01-02-2026",

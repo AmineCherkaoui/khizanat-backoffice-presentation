@@ -16,7 +16,14 @@ import { useStorage } from "@/features/dashboard/store/useStorage";
 import { getManuscriptStats } from "@/features/dashboard/utils/manuscriptStats";
 import { useForm, useStore } from "@tanstack/react-form";
 import { createFileRoute } from "@tanstack/react-router";
-import { Clock, Download, Scroll, Settings } from "lucide-react";
+import {
+  CheckCircle,
+  Clock,
+  Download,
+  Printer,
+  Scroll,
+  Settings,
+} from "lucide-react";
 import { useMemo } from "react";
 
 const userReports = users.slice(0, 5).map((user) => {
@@ -76,10 +83,7 @@ function RouteComponent() {
 
   return (
     <>
-      <DashboardHeader
-        title="تقارير و بيانات سير العمل"
-        description="لعرض الموظفين وتوزيع مهامهم"
-      >
+      <DashboardHeader title="تقارير و بيانات سير العمل">
         <div className="flex gap-4 flex-col-reverse @lg:flex-row transition-all">
           <form.Field
             name="khizana"
@@ -100,42 +104,53 @@ function RouteComponent() {
       </DashboardHeader>
 
       <section className="grid grid-cols-1 gap-4 @xl:grid-cols-4 @5xl:grid-cols-12 ">
-        <DashboardCard className="@xl:col-span-full @5xl:col-span-3 p-2">
-          <div className="grid grid-cols-1 @md:grid-cols-2 gap-2">
-            <div className="flex flex-col border p-4 rounded-lg bg-base-100 col-span-full">
-              <Scroll className="size-10 bg-current/10 text-blue-500 p-2 rounded" />
-              <AnimatedNumber
-                value={realTotal}
-                className="font-bold text-lg text-base-800"
-              />
-              <p className="text-xs">إجمالي المخطوطات</p>
-            </div>
+        <DashboardCard className="@xl:col-span-full @5xl:col-span-3 @5xl:row-span-2 p-2">
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-1  gap-2">
+              <div className="flex flex-col border p-4 rounded-lg bg-blue-100 col-span-full">
+                <Scroll className="size-10 bg-current/10 text-blue-500 p-2 rounded" />
+                <AnimatedNumber
+                  value={realTotal}
+                  className="font-bold text-lg text-base-800"
+                />
+                <p className="text-xs">إجمالي المخطوطات</p>
+              </div>
 
-            <div className="flex flex-col border p-4 rounded-lg bg-base-100">
-              <Clock className="size-10 bg-current/10 text-yellow-500 p-2 rounded" />
-              <AnimatedNumber
-                className="font-bold text-2xl text-base-800"
-                value={generalStats.inCataloging}
-              />
-              <p className="text-xs">تم الفهرسة</p>
-            </div>
+              <div className="flex flex-col border p-4 rounded-lg bg-base-100">
+                <Clock className="size-10 bg-current/10 text-yellow-500 p-2 rounded" />
+                <AnimatedNumber
+                  className="font-bold text-2xl text-base-800"
+                  value={generalStats.inCataloging}
+                />
+                <p className="text-xs">تم الفهرسة</p>
+              </div>
 
-            {/* <div className="flex flex-col border p-4 rounded-lg bg-base-100">
-              <CheckCircle className="size-10 bg-current/10 text-green-500 p-2 rounded" />
-              <AnimatedNumber
-                className="font-bold text-2xl text-base-800"
-                value={generalStats.completed}
-              />
-              <p className="text-xs">تم نشرها</p>
-            </div> */}
+              <div className="flex flex-col border p-4 rounded-lg bg-base-100">
+                <Printer className="size-10 bg-current/10 text-purple-500 p-2 rounded" />
+                <AnimatedNumber
+                  className="font-bold text-2xl text-base-800"
+                  value={generalStats.digitalized}
+                />
+                <p className="text-xs">تم رقمنتها</p>
+              </div>
 
-            <div className="flex flex-col border p-4 rounded-lg bg-base-100">
-              <Settings className="size-10 bg-current/10 text-red-500 p-2 rounded" />
-              <AnimatedNumber
-                className="font-bold text-2xl text-base-800"
-                value={generalStats.underMaintenance}
-              />
-              <p className="text-xs">قيد الصيانة</p>
+              <div className="flex flex-col border p-4 rounded-lg bg-base-100">
+                <CheckCircle className="size-10 bg-current/10 text-green-500 p-2 rounded" />
+                <AnimatedNumber
+                  className="font-bold text-2xl text-base-800"
+                  value={generalStats.completed}
+                />
+                <p className="text-xs">تم نشرها</p>
+              </div>
+
+              <div className="flex flex-col border p-4 rounded-lg bg-base-100">
+                <Settings className="size-10 bg-current/10 text-red-500 p-2 rounded" />
+                <AnimatedNumber
+                  className="font-bold text-2xl text-base-800"
+                  value={generalStats.underMaintenance}
+                />
+                <p className="text-xs">قيد الصيانة</p>
+              </div>
             </div>
           </div>
         </DashboardCard>
@@ -149,55 +164,6 @@ function RouteComponent() {
               dataKey="value"
               color="#0095ff"
             />
-          </div>
-        </DashboardCard>
-
-        <DashboardCard className=" @xl:col-span-full @5xl:col-span-3 p-2">
-          <div className="grid grid-cols-1  gap-2 h-full">
-            <div className="flex flex-col border p-4 rounded-lg bg-blue-800 text-base-50">
-              <p className="text-xs font-bold">المخطوطات المعالجة</p>
-              <AnimatedNumber
-                value={generalStats.procceded}
-                className="font-bold text-lg "
-              />
-              <p className="text-[10px] mt-auto text-current/70">
-                مخطوطة تم معالجتها{" "}
-              </p>
-            </div>
-            <div className="flex flex-col border p-4 rounded-lg bg-radial from-blue-50 to-blue-200 text-blue-700">
-              <p className="text-xs font-bold">المخطوطات المنشورة</p>
-              <AnimatedNumber
-                value={generalStats.procceded}
-                className="font-bold text-lg "
-              />
-              <p className="text-[10px] mt-auto text-current/70">
-                مخطوطة تم نشرها
-              </p>
-            </div>
-
-            {/* <div className="flex flex-col border p-4 rounded-lg bg-radial from-blue-50 to-blue-200 text-blue-700">
-              <p className="text-xs font-bold">صفحة محسّنة</p>
-              <AnimatedNumber value={507} className="font-bold text-lg " />
-              <p className="text-[10px] mt-auto text-current/70">
-                صفحة تم تحسينها
-              </p>
-            </div> */}
-            {/* 
-            <div className="flex flex-col border p-4 rounded-lg bg-radial from-blue-50 to-blue-200 text-blue-700">
-              <p className="text-xs font-bold">مخطوطة مُحقَّقة</p>
-              <AnimatedNumber value={420} className="font-bold text-lg " />
-              <p className="text-[10px] mt-auto text-current/70">
-                المخطوطات المُحقَّقة
-              </p>
-            </div> */}
-            {/* 
-            <div className="flex flex-col border p-4 rounded-lg bg-radial from-blue-50 to-blue-200 text-blue-700">
-              <p className="text-xs font-bold">خطأ مصحح</p>
-              <AnimatedNumber value={114} className="font-bold text-lg " />
-              <p className="text-[10px] mt-auto text-current/70">
-                المخطوطات المصححة
-              </p>
-            </div> */}
           </div>
         </DashboardCard>
 

@@ -188,7 +188,9 @@ function RouteComponent() {
 
             <div className="flex flex-col gap-8">
               <div>
-                <p className="font-semibold text-sm text-base-700">الوعاء</p>
+                <p className="font-semibold text-sm text-base-700">
+                  نوع الغلاف
+                </p>
                 <p className="text-sm text-base-500">{manuscript.material} </p>
               </div>
               <div>
@@ -198,7 +200,9 @@ function RouteComponent() {
                 </p>
               </div>
               <div>
-                <p className="font-semibold text-sm text-base-700">المقياس</p>
+                <p className="font-semibold text-sm text-base-700">
+                  مقياس المخطوط
+                </p>
                 <p className="text-sm text-base-500">{manuscript.dimensions}</p>
               </div>
             </div>
